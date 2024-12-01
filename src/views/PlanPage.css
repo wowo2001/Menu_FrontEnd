@@ -1,0 +1,84 @@
+.plan-page {
+    text-align: center;
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+    margin-top: 10px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.dropdown-container {
+    width: 30%;
+    padding: 10px;
+    text-align: left;
+}
+
+.menu-dropdown {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.table-container {
+    width: 65%;
+    padding: 10px;
+    text-align: left;
+}
+
+.ingredients-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .ingredients-table th,
+    .ingredients-table td {
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+
+.next-button-container {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 20px;
+}
+
+.next-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.next-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .next-button:hover {
+        background-color: #45a049;
+    }
