@@ -39,7 +39,7 @@
     // Importing Axios for HTTP requests
     import axios from 'axios';
 
-    const apiHost = "http://172.31.11.207:80"; // Your backend API
+    const apiHost = "http://13.54.181.1:80"; // Your backend API
 
     export default {
         data() {
