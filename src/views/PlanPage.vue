@@ -2,8 +2,13 @@
     <div class="plan-page">
         <div class="header">
             <h1>规划页</h1>
-            <div class="date-container">
-                <p>{{ formattedDate }}</p> <!-- Display today's date -->
+            <div class="dropdown-container">
+                <select v-model="menuId" class="menu-dropdown" @change="setMenuId(menuId)">
+                    <option value="" disabled>Select a dish</option>
+                    <option v-for="(Id, index) in MenuIdList" :key="index" :value="Id">
+                        {{ Id }}
+                    </option>
+                </select>
             </div>
         </div>
 
