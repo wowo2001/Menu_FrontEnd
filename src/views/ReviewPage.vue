@@ -22,8 +22,8 @@
                     <td>
                         <!-- Toggle switch with color changes -->
                         <button @click="toggleStatus(ingredient)"
-                                :class="{'btn-on': ingredient.isOn, 'btn-off': !ingredient.isOn}">
-                            {{ ingredient.isOn ? 'On' : 'Off' }}
+                                :class="{'btn-on': ingredient.purchased, 'btn-off': !ingredient.purchased}">
+                            {{ ingredient.purchased ? 'Purchased' : 'Not yet' }}
                         </button>
                     </td>
                 </tr>
@@ -36,10 +36,8 @@
 </template>
 
 <script>
-    // Importing Axios for HTTP requests
     import axios from 'axios';
 
-    const apiHost = "http://13.54.181.1:80"; // Your backend API
 
     export default {
         data() {
@@ -53,12 +51,10 @@
                 const today = new Date();
                 const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
                 this.menuId = today.toLocaleDateString('en-US', options);
-                console.log(this.menuId); // Logs the menu ID (current date)
                 return this.menuId; // Format as MM/DD/YYYY
             }
         },
         watch: {
-            // Watch for changes in the menuId and make the API call
             menuId(newMenuId) {
                 if (newMenuId) {
                     this.fetchIngredientList(newMenuId);
@@ -69,24 +65,36 @@
             // Fetch ingredients list from the API
             async fetchIngredientList(menuId) {
                 try {
-                    const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`);
-                    console.log(response.data); // Logs the API response
-                    // Assuming the response contains the allIngredientList
+                    const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`);
                     this.allIngredientList = response.data.allIngredientList.map(ingredient => ({
                         ...ingredient,
-                        isOn: false // Set default toggle state to off (false)
+                        purchased: ingredient.purchased, // Retain the purchased status from the API
                     }));
                 } catch (error) {
                     console.error("Error fetching ingredient list:", error);
                 }
             },
-            // Toggle the state of the ingredient
-            toggleStatus(ingredient) {
-                ingredient.isOn = !ingredient.isOn; // Toggle the state (on/off)
+
+            // Toggle the purchased status of an ingredient
+            async toggleStatus(ingredient) {
+                ingredient.purchased = !ingredient.purchased; // Toggle the status
+
+                // Prepare the payload to send to the server
+                const payload = {
+                    id: this.menuId, // Use the current menuId as the ID
+                    allIngredientList: this.allIngredientList // Send the updated ingredient list
+                };
+
+                try {
+                    // Send a POST request with the updated list
+                    const response = await axios.post(`${apiHost}/ShopList/UpdatePurchaseList`, payload);
+                    console.log('Update response:', response.data); // Log the response
+                } catch (error) {
+                    console.error("Error updating purchase status:", error);
+                }
             }
         },
         mounted() {
-            // Call the API when the component is mounted
             if (this.menuId) {
                 this.fetchIngredientList(this.menuId);
             }

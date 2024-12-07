@@ -2,7 +2,6 @@
 import axios from 'axios';
 import { useRouter } from 'vue-router'; // To navigate programmatically
 
-const apiHost = "http://13.54.181.1:80"; // Your backend API
 
 export default {
     name: "PlanPage",
@@ -74,6 +73,21 @@ export default {
         },
         async postMyChoice() {
         },
+
+        async fetchIngredientList(menuId) {
+            try {
+                const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`);
+                console.log(response.data); // Logs the API response
+                // Assuming the response contains the allIngredientList
+                this.allIngredientList = response.data.allIngredientList.map(ingredient => ({
+                    ...ingredient,
+                    isOn: false // Set default toggle state to off (false)
+                }));
+            } catch (error) {
+                console.error("Error fetching ingredient list:", error);
+            }
+        },
+
         clickNextButton() {
             const requestBody = {
                 Id: this.menuId,  // Using the formatted menu ID (e.g., "12/2/2024")
@@ -110,6 +124,7 @@ export default {
                 this.soupIngredients = [];
             }
             else {
+                this.fetchIngredientList(this.menuId);
                 this.$router.push('/review');
             }
            
