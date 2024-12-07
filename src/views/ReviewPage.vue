@@ -38,7 +38,7 @@
 <script>
     import axios from 'axios';
 
-
+    const apiHost = "http://13.54.181.1:80";
     export default {
         data() {
             return {

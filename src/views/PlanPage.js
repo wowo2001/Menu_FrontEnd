@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useRouter } from 'vue-router'; // To navigate programmatically
 
-
+const apiHost = "http://13.54.181.1:80";
 export default {
     name: "PlanPage",
     data() {
