@@ -31,15 +31,6 @@ export default {
         this.fetchTodayChoice(this.menuId);
         
     },
-    computed: {
-        // Computed property to return today's date in the desired format
-        //formattedDate() {
-        //    const today = new Date();
-        //    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-        //    this.menuId = today.toLocaleDateString('en-US', options);
-        //    return this.menuId // Format as MM/DD/YYYY
-        //}
-    },
 
     methods: {
         // Fetch menu data from API
@@ -101,14 +92,12 @@ export default {
         },
 
         async fetchIngredientList(menuId) {
+            await this.delay(500);
+
             try {
                 const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`);
                 console.log(response.data); // Logs the API response
-                // Assuming the response contains the allIngredientList
-                this.allIngredientList = response.data.allIngredientList.map(ingredient => ({
-                    ...ingredient,
-                    isOn: false // Set default toggle state to off (false)
-                }));
+
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
             }
@@ -134,6 +123,9 @@ export default {
             const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
             this.menuId = today.toLocaleDateString('en-US', options);
             return this.menuId // Format as MM/DD/YYYY
+        },
+        delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         },
 
         
@@ -176,7 +168,7 @@ export default {
             }
             else {
                 this.fetchIngredientList(this.menuId);
-                this.$router.push('/review');
+                this.$router.push({ path:'/review', query: { menuId: this.menuId } });
             }
            
         }

@@ -2,7 +2,14 @@
     <div>
         <h2>采购清单</h2>
         <!-- Displaying the menuId (current date) -->
-        <p>Menu ID: {{ formattedDate }}</p>
+        <div class="dropdown-container">
+            <select v-model="menuId" class="menu-dropdown" @change="setMenuId(menuId)">
+                <option value="" disabled>Select Menu</option>
+                <option v-for="(Id, index) in MenuIdList" :key="index" :value="Id">
+                    {{ Id }}
+                </option>
+            </select>
+        </div>
 
         <!-- Check if the data is loaded before showing the table -->
         <table v-if="allIngredientList.length" border="1">
@@ -29,9 +36,6 @@
                 </tr>
             </tbody>
         </table>
-
-        <!-- Loading message if data is not loaded yet -->
-        <p v-else>Loading ingredients...</p>
     </div>
 </template>
 
@@ -42,28 +46,15 @@
     export default {
         data() {
             return {
+                MenuIdList: null,
                 menuId: null,
                 allIngredientList: [], // Will store the list of ingredients
             };
         },
-        computed: {
-            formattedDate() {
-                const today = new Date();
-                const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-                this.menuId = today.toLocaleDateString('en-US', options);
-                return this.menuId; // Format as MM/DD/YYYY
-            }
-        },
-        watch: {
-            menuId(newMenuId) {
-                if (newMenuId) {
-                    this.fetchIngredientList(newMenuId);
-                }
-            }
-        },
         methods: {
             // Fetch ingredients list from the API
             async fetchIngredientList(menuId) {
+                await this.delay(1000);
                 try {
                     const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`);
                     this.allIngredientList = response.data.allIngredientList.map(ingredient => ({
@@ -92,13 +83,36 @@
                 } catch (error) {
                     console.error("Error updating purchase status:", error);
                 }
-            }
-        },
-        mounted() {
-            if (this.menuId) {
+            },
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            },
+            async fetchAllPurchaseList() {
+                try {
+                    const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`);
+                    console.log(response.data); // Logs the API response
+                    // Assuming the response contains the allIngredientList
+                    this.MenuIdList = response.data;
+                    console.log(this.MenuIdList);
+                } catch (error) {
+                    console.error("Error fetching ingredient list:", error);
+                }
+            },
+            async setMenuId(menuId) {
+                this.menuId = menuId;
                 this.fetchIngredientList(this.menuId);
             }
+        },
+
+
+        mounted() {
+            this.fetchAllPurchaseList();
+            this.menuId = this.$route.query.menuId;
+            this.fetchIngredientList(this.menuId);
+
         }
+        
+
     };
 </script>
 

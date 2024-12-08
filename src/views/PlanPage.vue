@@ -4,7 +4,7 @@
             <h1>规划页</h1>
             <div class="dropdown-container">
                 <select v-model="menuId" class="menu-dropdown" @change="setMenuId(menuId)">
-                    <option value="" disabled>Select a dish</option>
+                    <option value="" disabled>Select Menu</option>
                     <option v-for="(Id, index) in MenuIdList" :key="index" :value="Id">
                         {{ Id }}
                     </option>
