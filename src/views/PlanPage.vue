@@ -22,7 +22,7 @@
         <div class="content">
             <h2>主菜</h2>
             <div class="dropdown-container">
-                <select v-model="selectedMainDish" class="menu-dropdown" @change="fetchIngredients(selectedMainDish, 'main')">
+                <select v-model="selectedMainDish" class="menu-dropdown" @change="handleUpdateDropList(selectedMainDish, 'main')">
                     <option value="" disabled selected>Select a dish</option>
                     <option v-for="(menu, index) in menuDataMain" :key="index" :value="menu">
                         {{ menu }}
@@ -54,7 +54,7 @@
         <div class="content">
             <h2>配菜 1</h2>
             <div class="dropdown-container">
-                <select v-model="selectedSideDish1" class="menu-dropdown" @change="fetchIngredients(selectedSideDish1, 'side1')">
+                <select v-model="selectedSideDish1" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish1, 'side1')">
                     <option value="" disabled selected>Select a dish</option>
                     <option v-for="(menu, index) in menuDataSide" :key="index" :value="menu">
                         {{ menu }}
@@ -86,7 +86,7 @@
         <div class="content">
             <h2>配菜 2</h2>
             <div class="dropdown-container">
-                <select v-model="selectedSideDish2" class="menu-dropdown" @change="fetchIngredients(selectedSideDish2, 'side2')">
+                <select v-model="selectedSideDish2" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish2, 'side2')">
                     <option value="" disabled selected>Select a dish</option>
                     <option v-for="(menu, index) in menuDataSide" :key="index" :value="menu">
                         {{ menu }}
@@ -118,7 +118,7 @@
         <div class="content">
             <h2>汤</h2>
             <div class="dropdown-container">
-                <select v-model="selectedSoup" class="menu-dropdown" @change="fetchIngredients(selectedSoup, 'soup')">
+                <select v-model="selectedSoup" class="menu-dropdown" @change="handleUpdateDropList(selectedSoup, 'soup')">
                     <option value="" disabled selected>Select a dish</option>
                     <option v-for="(menu, index) in menuDataSoup" :key="index" :value="menu">
                         {{ menu }}
@@ -146,8 +146,73 @@
             </div>
         </div>
 
+        <div class="content">
+            <h2>午餐</h2>
+            <div class="dropdown-container">
+                <select v-model="selectedLunch" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'lunch')">
+                    <option value="" disabled selected>Select a dish</option>
+                    <option v-for="(menu, index) in menuDataLunch" :key="index" :value="menu">
+                        {{ menu }}
+                    </option>
+                </select>
+            </div>
+
+            <div v-if="lunchIngredients.length" class="table-container">
+                <table class="ingredients-table">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>数量</th>
+                            <th>单位</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(ingredient, index) in lunchIngredients" :key="index">
+                            <td>{{ ingredient.name }}</td>
+                            <td>{{ ingredient.amount }}</td>
+                            <td>{{ ingredient.unit }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>芊宝</h2>
+            <div class="dropdown-container">
+                <select v-model="selectedBaby" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'baby')">
+                    <option value="" disabled selected>Select a dish</option>
+                    <option v-for="(menu, index) in menuDataBaby" :key="index" :value="menu">
+                        {{ menu }}
+                    </option>
+                </select>
+            </div>
+
+            <div v-if="babyIngredients.length" class="table-container">
+                <table class="ingredients-table">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>数量</th>
+                            <th>单位</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(ingredient, index) in babyIngredients" :key="index">
+                            <td>{{ ingredient.name }}</td>
+                            <td>{{ ingredient.amount }}</td>
+                            <td>{{ ingredient.unit }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="next-button-container" v-if="currentDayIndex > 0">
+            <button class="previous-button" @click="clickPreviousButton">上一页</button>
+        </div>
         <div class="next-button-container">
-            <button class="next-button" @click="clickNextButton">Next</button>
+            <button class="next-button" @click="clickNextButton">下一页</button>
         </div>
 
     </div>
