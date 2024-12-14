@@ -6,6 +6,6 @@ export default {
     plugins: [vue()],
     server: {
         host: '0.0.0.0', // Allow connections from any IP
-        port: 5000, // Bind to port 80
+        port: 80, // Bind to port 80
     },
 };
