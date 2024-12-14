@@ -177,7 +177,7 @@
             </div>
         </div>
 
-        <div class="content">
+        <!--<div class="content">
             <h2>芊宝</h2>
             <div class="dropdown-container">
                 <select v-model="selectedBaby" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'baby')">
@@ -206,7 +206,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>-->
 
         <div class="next-button-container" v-if="currentDayIndex > 0">
             <button class="previous-button" @click="clickPreviousButton">上一页</button>

@@ -9,15 +9,17 @@
                     {{ Id }}
                 </option>
             </select>
+            <button @click="deletePurchaseList" class="menu-button">删除菜单</button>
         </div>
 
         <!-- Check if the data is loaded before showing the table -->
         <table v-if="allIngredientList.length" border="1">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Unit</th>
+                    <th @click="sortTable('name')">Name</th>
+                    <th @click="sortTable('amount')">Amount</th>
+                    <th @click="sortTable('unit')">Unit</th>
+                    <th @click="sortTable('location')">Location</th>
                     <th>Toggle</th> <!-- New Toggle Column -->
                 </tr>
             </thead>
@@ -26,6 +28,7 @@
                     <td>{{ ingredient.name }}</td>
                     <td>{{ ingredient.amount }}</td>
                     <td>{{ ingredient.unit }}</td>
+                    <td>{{ ingredient.location }}</td>
                     <td>
                         <!-- Toggle switch with color changes -->
                         <button @click="toggleStatus(ingredient)"
@@ -49,6 +52,8 @@
                 MenuIdList: null,
                 menuId: null,
                 allIngredientList: [], // Will store the list of ingredients
+                sortBy: '', // Column to sort by
+                sortOrder: 'asc', // Sorting order (ascending or descending)
             };
         },
         methods: {
@@ -61,6 +66,7 @@
                         ...ingredient,
                         purchased: ingredient.purchased, // Retain the purchased status from the API
                     }));
+                    this.sortTable(this.sortBy);
                 } catch (error) {
                     console.error("Error fetching ingredient list:", error);
                 }
@@ -100,8 +106,45 @@
             },
             async setMenuId(menuId) {
                 this.menuId = menuId;
+                this.$router.push({ path: '/review', query: { menuId: this.menuId } });
                 this.fetchIngredientList(this.menuId);
-            }
+
+            },
+            sortTable(column) {
+                if (this.sortBy === column) {
+                    // Toggle the sorting order
+                    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // Set the sorting column and default to ascending order
+                    this.sortBy = column;
+                    this.sortOrder = 'asc';
+                }
+
+                // Sort the list based on the selected column
+                this.allIngredientList.sort((a, b) => {
+                    const valueA = a[column];
+                    const valueB = b[column];
+
+                    if (this.sortOrder === 'asc') {
+                        return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0);
+                    } else {
+                        return valueA < valueB ? 1 : (valueA > valueB ? -1 : 0);
+                    }
+                });
+            },
+            async deletePurchaseList() {
+                const payload = {
+                    Id: this.menuId // Use the current menuId as the ID
+                };
+                console.log(payload);
+                try {
+                    const response = await axios.post(`${apiHost}/ShopList/DeleteShopList`, payload);
+                    console.log(response.data); // Logs the API response
+                    location.reload();
+                } catch (error) {
+                    console.error("Error delete purchase list:", error);
+                }
+            },
         },
 
 
