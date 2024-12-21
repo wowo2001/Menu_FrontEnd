@@ -21,6 +21,12 @@ export default {
             selectedSoup: null,         // Selected soup
             selectedLunch: null,
             selectedBaby: null,
+            previousSelectedMainDish: null,     // Selected main dish
+            previousSelectedSideDish1: null,    // Selected side dish 1
+            previousSelectedSideDish2: null,    // Selected side dish 2
+            previousSelectedSoup: null,         // Selected soup
+            previousSelectedLunch: null,
+            previousSelectedBaby: null,
             mainDishIngredients: [],    // Ingredients for main dish
             sideDish1Ingredients: [],   // Ingredients for side dish 1
             sideDish2Ingredients: [],   // Ingredients for side dish 2
@@ -110,6 +116,7 @@ export default {
             this.fetchIngredients(this.selectedSoup, 'soup')
             this.fetchIngredients(this.selectedLunch, 'lunch')
             this.fetchIngredients(this.selectedBaby, 'baby')
+            this.cacheDropdownListOptions();
         },
 
         async fetchIngredientList(menuId) {
@@ -148,7 +155,21 @@ export default {
         delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         },
-        async updateShopList() {
+        async updateShopList(menuName, dishType) {
+            var existingInThisWeeksMenu = await this.isDishExistingInThisWeeksMenu(menuName);
+            try {
+                const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList`, {
+                    params: {
+                        Id: this.menuId
+                    }
+                });
+                var notExistingPurchaseList = response.data.id == null;
+                console.log(notExistingPurchaseList);
+ 
+            } catch (error) {
+                console.error("Error fetching ingredient list:", error);
+            }
+
             const requestBody = {
                 Id: this.menuId,  // Using the formatted menu ID (e.g., "12/2/2024")
                 MyChoice: [
@@ -165,21 +186,92 @@ export default {
                     }
                 ]
             };
-            axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody)
-                .then(response => {
-                    console.log("Successfully updated the shop list:", response.data);
-                })
-                .catch(error => {
-                    console.error('Error updating the shop list:', error);
-                    // Handle error (e.g., show an error message to the user)
-                });
-            console.log(requestBody);
+            if (notExistingPurchaseList == true && !existingInThisWeeksMenu) {
+                axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody)
+                    .then(response => {
+                        console.log("Successfully updated the shop list:", response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error updating the shop list:', error);
+                        // Handle error (e.g., show an error message to the user)
+                    });
+                this.cacheDropdownListOptions();
+            }
+            else {
+                var userResponse = true;
+                if (!notExistingPurchaseList) {
+                    userResponse = confirm("已经生成购物清单，更改菜单可能影响购物清单，是否更改？") && userResponse;
+                }
+                if (existingInThisWeeksMenu && userResponse) {
+                    userResponse = confirm("本周菜单已有此菜，是否继续选择？") && userResponse;
+                }
+                if (userResponse) {
+                    axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody)
+                        .then(response => {
+                            console.log("Successfully updated the shop list:", response.data);
+                        })
+                        .catch(error => {
+                            console.error('Error updating the shop list:', error);
+                            // Handle error (e.g., show an error message to the user)
+                        });
+                    this.cacheDropdownListOptions();
+                }
+                else {
+                    if (dishType === 'main') {
+                        this.selectedMainDish = this.previousSelectedMainDish;
+                        this.fetchIngredients(this.selectedMainDish, 'main');
+                    } else if (dishType === 'side1') {
+                        this.selectedSideDish1 = this.previousSelectedSideDish1;
+                        this.fetchIngredients(this.selectedMainDish, 'side1');
+                    } else if (dishType === 'side2') {
+                        this.selectedSideDish2 = this.previousSelectedSideDish2;
+                        this.fetchIngredients(this.selectedMainDish, 'side2');
+                    }
+                    else if (dishType === 'soup') {
+                        this.selectedSoup = this.previousSelectedSoup;
+                        this.fetchIngredients(this.selectedMainDish, 'soup');
+                    }
+                    else if (dishType === 'lunch') {
+                        this.selectedLunch = this.previousSelectedLunch;
+                        this.fetchIngredients(this.selectedMainDish, 'lunch');
+                    }
+                    else if (dishType === 'baby') {
+                        this.selectedBaby = this.previousSelectedBaby;
+                        this.fetchIngredients(this.selectedMainDish, 'baby');
+                    }
+                }
+            }
         },
         async handleUpdateDropList(menuName, dishType) {
             this.fetchIngredients(menuName, dishType);
-            this.updateShopList();
+            this.updateShopList(menuName, dishType);
+           
+        },
+        cacheDropdownListOptions() {
+            this.previousSelectedMainDish = this.selectedMainDish;
+            this.previousSelectedSideDish1 = this.selectedSideDish1;
+            this.previousSelectedSideDish2 = this.selectedSideDish2;
+            this.previousSelectedSoup = this.selectedSoup;
+            this.previousSelectedLunch = this.selectedLunch;
+            this.previousSelectedBaby = this.selectedBaby;
+
         },
 
+        async isDishExistingInThisWeeksMenu(dishName) {
+            try {
+                const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`);
+                const todayChoiceList = response.data.myChoice;
+                var thisWeeksMenu = new Set();
+                todayChoiceList.forEach((item, index) => {
+                    item.dish.forEach((dish, index) => {
+                        thisWeeksMenu.add(dish);
+                    });
+            });
+            } catch (error) {
+                console.error("Error fetching ingredient list:", error);
+            }
+            return thisWeeksMenu.has(dishName);
+        },
         clickNextButton() {
             console.log(this.currentDayIndex);
             if (this.currentDayIndex < 4) {
