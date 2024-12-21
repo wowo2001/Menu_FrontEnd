@@ -121,7 +121,6 @@ export default {
 
         async fetchIngredientList(menuId) {
             await this.delay(500);
-
             try {
                 const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`);
                 console.log(response.data); // Logs the API response
@@ -292,7 +291,7 @@ export default {
             }
             else {
                 this.fetchIngredientList(this.menuId);
-                this.$router.push({ path:'/review', query: { menuId: this.menuId } });
+                this.$router.push({ path:'/miscellaneous', query: { menuId: this.menuId } });
             }
            
         },
