@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import PlanPage from '../views/PlanPage.vue';
 import ReviewPage from '../views/ReviewPage.vue';
 import MiscellaneousPage from '../views/MiscellaneousPage.vue';
+import MenuPage from '../views/MenuPage.vue';
 
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
         path: '/miscellaneous',
         name: 'MiscellaneousPage',
         component: MiscellaneousPage,
+    },
+    {
+        path: '/menu',
+        name: 'MenuPage',
+        component: MenuPage,
     },
 ];
 

@@ -1,9 +1,10 @@
-<template>
+﻿<template>
     <div id="app">
         <div class="tabs-container">
             <!-- Buttons acting as tabs -->
-            <button @click="goToPage('/plan')" class="tab-button">Plan Page</button>
-            <button @click="goToPage('/review')" class="tab-button">Review Page</button>
+            <button @click="goToPage('/plan')" class="tab-button">规划</button>
+            <button @click="goToPage('/review')" class="tab-button">采购清单</button>
+            <button @click="goToPage('/menu')" class="tab-button">修改菜单</button>
         </div>
         <!-- Router view to display the page content for the current route -->
         <router-view></router-view>
