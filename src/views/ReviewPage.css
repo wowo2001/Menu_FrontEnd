@@ -44,8 +44,8 @@ h1 {
     padding: 5px 10px;
 }
 
-.menu-button {
-    width: 25%;
+.menu-id-button {
+    width: 120px;
     padding: 10px 20px;
     margin: 5px;
     background-color: #f0f0f0;
@@ -54,12 +54,12 @@ h1 {
     color: black;
 }
 
-    .menu-button.selected {
+    .menu-id-button.selected {
         background-color: #007bff;
         color: white;
     }
 
-    .menu-button:hover {
+    .menu-id-button:hover {
         background-color: #007bff;
         color: white;
     }

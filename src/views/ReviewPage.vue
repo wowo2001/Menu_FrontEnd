@@ -5,9 +5,8 @@
         <div class="button-container">
             <button v-for="(Id, index) in MenuIdList"
                     :key="index"
-                    :class="{'selected': menuId === Id}"
-                    @click="setMenuId(Id)"
-                    class="menu-button">
+                    :class="['menu-id-button', {'selected': menuId === Id}]"
+                    @click="setMenuId(Id)">
                 {{ Id }}
             </button>
         </div>
