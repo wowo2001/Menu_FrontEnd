@@ -110,8 +110,8 @@ export default {
 
     mounted() {
         this.fetchAllPurchaseList();
-        //this.menuId = this.$route.query.menuId;
-        //this.fetchIngredientList(this.menuId);
+        this.menuId = this.$route.query.menuId;
+        this.fetchIngredientList(this.menuId);
 
     }
 
