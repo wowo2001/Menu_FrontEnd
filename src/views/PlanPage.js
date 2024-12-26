@@ -221,22 +221,22 @@ export default {
                         this.fetchIngredients(this.selectedMainDish, 'main');
                     } else if (dishType === 'side1') {
                         this.selectedSideDish1 = this.previousSelectedSideDish1;
-                        this.fetchIngredients(this.selectedMainDish, 'side1');
+                        this.fetchIngredients(this.selectedSideDish1, 'side1');
                     } else if (dishType === 'side2') {
                         this.selectedSideDish2 = this.previousSelectedSideDish2;
-                        this.fetchIngredients(this.selectedMainDish, 'side2');
+                        this.fetchIngredients(this.selectedSideDish2, 'side2');
                     }
                     else if (dishType === 'soup') {
                         this.selectedSoup = this.previousSelectedSoup;
-                        this.fetchIngredients(this.selectedMainDish, 'soup');
+                        this.fetchIngredients(this.selectedSoup, 'soup');
                     }
                     else if (dishType === 'lunch') {
                         this.selectedLunch = this.previousSelectedLunch;
-                        this.fetchIngredients(this.selectedMainDish, 'lunch');
+                        this.fetchIngredients(this.selectedLunch, 'lunch');
                     }
                     else if (dishType === 'baby') {
                         this.selectedBaby = this.previousSelectedBaby;
-                        this.fetchIngredients(this.selectedMainDish, 'baby');
+                        this.fetchIngredients(this.selectedBaby, 'baby');
                     }
                 }
             }
