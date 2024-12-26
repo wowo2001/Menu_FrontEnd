@@ -11,11 +11,20 @@
             </button>
         </div>
 
+        <div class="button-container">
+            <button v-for="(filter, index) in filterList"
+                    :key="index"
+                    :class="['menu-id-button', {'selected': filterName === filter}]"
+                    @click="setFilter(filter)">
+                {{ filter }}
+            </button>
+        </div>
+
         <div v-if="isLoading" class="spinner-overlay">
             <div class="spinner"></div>
         </div>
         <!-- Check if the data is loaded before showing the table -->
-        <table v-if="allIngredientList.length" border="1">
+        <table v-if="sortedIngredientList.length" border="1">
             <thead>
                 <tr>
                     <th @click="sortTable('name')">Name</th>
@@ -26,7 +35,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="ingredient in allIngredientList" :key="ingredient.name">
+                <tr v-for="ingredient in sortedIngredientList" :key="ingredient.name">
                     <td>{{ ingredient.name }}</td>
                     <td>{{ ingredient.amount }}</td>
                     <td>{{ ingredient.unit }}</td>

@@ -11,6 +11,9 @@ export default {
             sortBy: '', // Column to sort by
             sortOrder: 'asc', // Sorting order (ascending or descending)
             isLoading: false,
+            filterList: [],
+            filterName: null,
+            sortedIngredientList: [],
         };
     },
     methods: {
@@ -19,13 +22,16 @@ export default {
             this.isLoading = true;
             await this.delay(1000);
             try {
-                const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`);
+                var response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`);
                 this.allIngredientList = response.data.allIngredientList.map(ingredient => ({
                     ...ingredient,
                     purchased: ingredient.purchased, // Retain the purchased status from the API
                 }));
+                this.sortedIngredientList = this.allIngredientList;
                 this.sortTable(this.sortBy);
                 this.isLoading = false;
+                
+                
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
                 this.isLoading = false;
@@ -66,8 +72,15 @@ export default {
         },
         async setMenuId(menuId) {
             this.menuId = menuId;
-            this.$router.push({ path: '/review', query: { menuId: this.menuId } });
-            this.fetchIngredientList(this.menuId);
+            await this.fetchIngredientList(this.menuId);
+            this.filterList = [];
+            this.filterName = null;
+            await this.allIngredientList.forEach((ingredient, index) => {
+                if (!this.filterList.includes(ingredient.location)) {
+                    this.filterList.push(ingredient.location);
+                }
+            });
+            this.$router.push({ path: '/review', query: { menuId: this.menuId, filter: this.filterName } });
 
         },
         sortTable(column) {
@@ -105,13 +118,24 @@ export default {
                 console.error("Error delete purchase list:", error);
             }
         },
+        async setFilter(filter) {
+            this.filterName = filter;
+            this.sortedIngredientList = [];
+            this.allIngredientList.forEach((ingredient, index) => {
+                if (ingredient.location === this.filterName) {
+                    this.sortedIngredientList.push(ingredient);
+                }
+            });
+            this.$router.push({ path: '/review', query: { menuId: this.menuId, filter: this.filterName } });
+        },
     },
 
 
     mounted() {
         this.fetchAllPurchaseList();
         this.menuId = this.$route.query.menuId;
-        this.fetchIngredientList(this.menuId);
+        this.menuId = this.$route.query.filter;
+        this.setMenuId(this.menuId);
 
     }
 
