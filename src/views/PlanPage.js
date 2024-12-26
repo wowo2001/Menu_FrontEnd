@@ -9,7 +9,7 @@ export default {
         return {
             MenuIdList: null,
             menuId: null,
-            dayOfWeek: ['星期一', '星期二', '星期三', '星期四', '星期五'], // Days of the week
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], // Days of the week
             currentDayIndex :0,
             menuDataSide: [],           // Menu data for Side Dishes
             menuDataSoup: [],           // Menu data for Soups
@@ -93,7 +93,6 @@ export default {
         async fetchTodayChoice(menuId) {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${menuId}`);
-                console.log(response.data); // Logs the API response
                 const todayChoiceList = response.data.myChoice;
                 // Assuming the response contains the allIngredientList
                 todayChoiceList.forEach((item, index) => {
