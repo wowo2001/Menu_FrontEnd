@@ -12,15 +12,16 @@
         </select>
     </div>
 
-    <div class="dropdown-container">
+    <div class="dropdown-container" v-if="MenuType !== null">
         <select v-model="MenuName" class="menu-dropdown" @change="setMenuName(MenuName)">
             <option value="newMenu">新增菜单</option>
             <option v-for="(MenuName, index) in MenuList" :key="index" :value="MenuName">
                 {{ MenuName }}
             </option>
         </select>
-        <button @click="deleteMenu" class="menu-button">删除菜单</button>
+
     </div>
+    <button @click="deleteMenu" class="btn red-button mt-3" v-if="MenuName !== null && MenuName !== 'newMenu'">删除菜单</button>
 
     <div class="container">
         <div class="col-12 col-md-4" v-if="MenuName === 'newMenu'">
@@ -40,14 +41,14 @@
             <div class="col-12 col-md-4">
                 <button @click="removeRow(index)" class="btn red-button mt-3">X</button>
             </div>
-         </div>
-
-            <!-- Buttons -->
-            <div class="container">
-                <button @click="addRow" class="btn btn-primary mt-3">更多</button>
-                <button @click="submit" class="btn btn-primary mt-3 custom-margin">提交</button>
-            </div>
         </div>
+        <button @click="addRow" class="btn blue-button mt-3" v-if="MenuName !== null">+</button>
+        <!-- Buttons -->
+        <div class="container">
+
+            <button @click="submit" class="btn btn-primary mt-3 custom-margin" v-if="MenuName !== null">提交</button>
+        </div>
+    </div>
 </template>
 
 <script src="./MenuPage.js"></script>

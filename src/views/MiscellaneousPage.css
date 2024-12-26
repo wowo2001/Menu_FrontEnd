@@ -22,7 +22,7 @@ button {
 
 
 .custom-input {
-    width: 100%; /* Make sure input fields are 100% of their column's width */
+    width: 80%; /* Make sure input fields are 100% of their column's width */
     max-width: 300px; /* Limit the width for larger screens */
     margin: 0 auto; /* Center the input fields */
 }
@@ -36,4 +36,16 @@ button {
 /* Optional: Reduce padding inside input fields */
 .form-control {
     padding: 0.375rem 0.75rem;
+}
+
+.blue-button {
+    background-color: blue;
+    color: white;
+    border: none;
+}
+
+.red-button {
+    background-color: red;
+    color: white;
+    border: none;
 }

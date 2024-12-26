@@ -56,6 +56,7 @@ export default {
             try {
                 const response = await axios.post(`${apiHost}/Location/EditLocation`, difference);
                 if (response.status === 200) {
+                    this.backend_data = this.rows;
                     alert("原料已更新");
                 }
             }

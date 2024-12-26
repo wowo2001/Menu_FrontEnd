@@ -21,6 +21,12 @@
     animation: spin 1s linear infinite;
 }
 
+.custom-input {
+    width: 80%; /* Make sure input fields are 100% of their column's width */
+    max-width: 300px; /* Limit the width for larger screens */
+    margin: 0 auto; /* Center the input fields */
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

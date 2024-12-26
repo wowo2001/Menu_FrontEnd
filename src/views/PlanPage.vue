@@ -1,7 +1,7 @@
 ﻿<template>
     <div class="plan-page">
         <div class="header">
-            <h1>规划页</h1>
+            <h1>菜单规划</h1>
             <div class="dropdown-container">
                 <select v-model="menuId" class="menu-dropdown" @change="setMenuId(menuId)">
                     <option value="" disabled>Select Menu</option>
@@ -18,6 +18,7 @@
             <p>{{ errorMessage }}</p>
         </div>
 
+        <div class="plan-section">
         <!-- Main Dish -->
         <div class="content">
             <h2>主菜</h2>
@@ -214,6 +215,7 @@
         <div class="next-button-container">
             <button class="next-button" @click="clickNextButton">下一页</button>
         </div>
+      </div>
 
     </div>
 </template>

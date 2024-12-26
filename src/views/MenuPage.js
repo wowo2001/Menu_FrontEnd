@@ -11,7 +11,7 @@ export default {
             ],
             MenuList: null,
             MenuName: null,
-            MenuType: this.MenuType,
+            MenuType: null,
             newMenuName: null
         };
     },

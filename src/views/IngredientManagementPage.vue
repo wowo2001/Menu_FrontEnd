@@ -10,10 +10,10 @@
 
         <!-- Dynamically generated rows for inputs -->
         <div v-for="(row, index) in rows" :key="index" class="row">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-2">
                 <input type="text" v-model="row.name" class="form-control custom-input" placeholder="原料名称" disabled />
             </div>
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-2">
                 <input type="text" v-model="row.location" class="form-control custom-input" placeholder="购买地点" @change="updateLocation(index,row.location)" />
             </div>
         </div>

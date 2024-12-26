@@ -9,8 +9,8 @@
                     {{ Id }}
                 </option>
             </select>
-            <button @click="deletePurchaseList" class="menu-button">删除菜单</button>
         </div>
+        <button @click="deletePurchaseList" class="menu-button"  v-if="menuId !== undefined">删除菜单</button>
 
         <!-- Check if the data is loaded before showing the table -->
         <table v-if="allIngredientList.length" border="1">

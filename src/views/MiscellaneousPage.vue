@@ -16,11 +16,14 @@
       <div class="col-12 col-md-4">
         <input type="text" v-model="row.unit" class="form-control custom-input" placeholder="单位" />
       </div>
+      <div class="col-12 col-md-4">
+        <button @click="removeRow(index)" class="btn red-button mt-3">X</button>
     </div>
-
+    </div>
+    <button @click="addRow" class="btn blue-button mt-3">增加更多</button>
     <!-- Buttons -->
     <div class="container">
-      <button @click="addRow" class="btn btn-primary mt-3">增加更多</button>
+      
       <button @click="submit" class="btn btn-primary mt-3 custom-margin">下一页</button>
     </div>
   </div>

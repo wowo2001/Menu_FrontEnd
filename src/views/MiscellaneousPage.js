@@ -20,6 +20,9 @@ export default {
         addRow() {
             this.rows.push({ name: '', amount: 0.0, unit: '', purchased: false, location:'' });
         },
+        removeRow(index) {
+            this.rows.splice(index, 1);
+        },
         async  submit() {
             var ingredientList = await this.fetchIngredientList(this.menuId);
             var validateRows = await this.validateRows();
