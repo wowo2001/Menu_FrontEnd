@@ -1,11 +1,14 @@
 .plan-page {
     text-align: center;
-    padding: 20px;
+    padding: 0;
 }
 
 h2 {
     color: #333;
     margin-top: 10px;
+    width: 100%;
+    font-size: 18px;
+    text-align: left;
 }
 
 .content {
@@ -13,6 +16,7 @@ h2 {
     justify-content: space-between;
     align-items: flex-start;
     margin-top: 20px;
+    padding: 0;
 }
 
 .dropdown-container {
@@ -86,4 +90,5 @@ button {
 .plan-section {
     text-align: center;
     padding: 20px;
+    padding: 0;
 }

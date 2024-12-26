@@ -9,7 +9,7 @@ export default {
         return {
             MenuIdList: null,
             menuId: null,
-            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], // Days of the week
+            dayOfWeek: ['星期一', '星期二', '星期三', '星期四', '星期五'], // Days of the week
             currentDayIndex :0,
             menuDataSide: [],           // Menu data for Side Dishes
             menuDataSoup: [],           // Menu data for Soups

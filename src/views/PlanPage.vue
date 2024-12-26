@@ -12,13 +12,14 @@
             </div>
         </div>
 
-        <h2>{{ dayOfWeek[currentDayIndex] }}</h2>  <!-- Displaying the current day -->
+        <h1>{{ dayOfWeek[currentDayIndex] }}</h1>  <!-- Displaying the current day -->
         <!-- Error Message -->
         <div v-if="errorMessage" class="error-message">
             <p>{{ errorMessage }}</p>
         </div>
 
         <div class="plan-section">
+            <h2>主菜</h2>
             <!-- Main Dish -->
             <div class="content">
                 <div class="dropdown-container">
@@ -51,6 +52,7 @@
             </div>
 
             <!-- Side Dish 1 -->
+            <h2>配菜</h2>
             <div class="content">
                 <div class="dropdown-container">
                     <select v-model="selectedSideDish1" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish1, 'side1')">
@@ -82,6 +84,7 @@
             </div>
 
             <!-- Side Dish 2 -->
+            <h2>配菜</h2>
             <div class="content">
                 <div class="dropdown-container">
                     <select v-model="selectedSideDish2" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish2, 'side2')">
@@ -113,6 +116,7 @@
             </div>
 
             <!-- Soup -->
+            <h2>汤</h2>
             <div class="content">
                 <div class="dropdown-container">
                     <select v-model="selectedSoup" class="menu-dropdown" @change="handleUpdateDropList(selectedSoup, 'soup')">
@@ -143,6 +147,7 @@
                 </div>
             </div>
 
+            <h2>午餐</h2>
             <div class="content">
                 <div class="dropdown-container">
                     <select v-model="selectedLunch" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'lunch')">

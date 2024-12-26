@@ -194,4 +194,11 @@
         .btn-on:hover, .btn-off:hover {
             opacity: 0.8;
         }
+    h1 {
+        color: #333;
+        margin-top: 10px;
+        width: 100%;
+        font-size: 36px;
+        text-align: center;
+    }
 </style>
