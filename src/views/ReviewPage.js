@@ -14,6 +14,7 @@ export default {
             filterList: [],
             filterName: null,
             sortedIngredientList: [],
+            firstOpen: true,
         };
     },
     methods: {
@@ -74,13 +75,19 @@ export default {
             this.menuId = menuId;
             await this.fetchIngredientList(this.menuId);
             this.filterList = [];
-            this.filterName = null;
             await this.allIngredientList.forEach((ingredient, index) => {
                 if (!this.filterList.includes(ingredient.location)) {
                     this.filterList.push(ingredient.location);
                 }
             });
-            this.$router.push({ path: '/review', query: { menuId: this.menuId} });
+            if (this.firstOpen) {
+                this.filterName = decodeURIComponent(this.$route.query.filter);
+                this.firstOpen = false;
+            }
+            else {
+                this.filterName = null;
+            }
+            this.$router.push({ path: '/review', query: { menuId: this.menuId } });
 
         },
         sortTable(column) {
@@ -126,7 +133,7 @@ export default {
                     this.sortedIngredientList.push(ingredient);
                 }
             });
-            this.$router.push({ path: '/review', query: {filter: this.filterName } });
+            this.$router.push({ path: '/review', query: { menuId: this.menuId, filter: encodeURIComponent(this.filterName) } });
         },
     },
 
@@ -134,8 +141,8 @@ export default {
     mounted() {
         this.fetchAllPurchaseList();
         this.menuId = this.$route.query.menuId;
-        this.menuId = this.$route.query.filter;
         this.setMenuId(this.menuId);
+
 
     }
 
