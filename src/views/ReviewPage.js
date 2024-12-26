@@ -82,6 +82,7 @@ export default {
             });
             if (this.firstOpen) {
                 this.filterName = decodeURIComponent(this.$route.query.filter);
+                this.setFilter(this.filterName);
                 this.firstOpen = false;
             }
             else {
