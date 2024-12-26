@@ -28,6 +28,7 @@ export default {
                 return response.data;
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
+                this.isLoading = false;
             }
         },
         async updateNameLocationList() {
