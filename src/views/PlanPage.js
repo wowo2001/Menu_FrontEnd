@@ -143,6 +143,7 @@ export default {
         async setMenuId(menuId) {
             this.menuId = menuId;
             this.fetchTodayChoice(this.menuId);
+            this.currentDayIndex = 0;
         },
         async formattedDate() {
             const today = new Date();
@@ -297,6 +298,22 @@ export default {
         clickPreviousButton() {
             this.fetchTodayChoice(this.menuId);
             this.currentDayIndex--;
+            this.selectedMainDish = null;
+            this.selectedSideDish1 = null;
+            this.selectedSideDish2 = null;
+            this.selectedSoup = null;
+            this.selectedLunch = null;
+            this.selectedBaby = null;
+            this.mainDishIngredients = [];
+            this.sideDish1Ingredients = [];
+            this.sideDish2Ingredients = [];
+            this.soupIngredients = [];
+            this.lunchIngredients = [];
+            this.babyIngredients = [];
+        },
+        setDay(day) {
+            this.fetchTodayChoice(this.menuId);
+            this.currentDayIndex = day;
             this.selectedMainDish = null;
             this.selectedSideDish1 = null;
             this.selectedSideDish2 = null;

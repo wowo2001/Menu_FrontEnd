@@ -1,0 +1,97 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Toggle button styles */
+.btn-on {
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-off {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+    .btn-on:hover, .btn-off:hover {
+        opacity: 0.8;
+    }
+
+h1 {
+    color: #333;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 36px;
+    text-align: center;
+}
+.dlt {
+    padding: 5px 10px;
+}
+
+.menu-button {
+    width: 25%;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    color: black;
+}
+
+    .menu-button.selected {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .menu-button:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+.red-button {
+    background-color: red;
+    color: white;
+    border: none;
+}
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #fff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.button-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+.button-transparent {
+    background-color:Background;
+}

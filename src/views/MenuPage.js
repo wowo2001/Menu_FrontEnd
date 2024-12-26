@@ -12,7 +12,13 @@ export default {
             MenuList: null,
             MenuName: null,
             MenuType: null,
-            newMenuName: null
+            newMenuName: null,
+            menuTypes: [
+                { value: 'Main', text: '主菜' },   // Main course
+                { value: 'Side', text: '配菜' },   // Side dish
+                { value: 'Soup', text: '汤' },     // Soup
+                { value: 'Lunch', text: '午餐' }   // Lunch
+            ],
         };
     },
     mounted() {
@@ -26,7 +32,8 @@ export default {
         removeRow(index) {
             this.rows.splice(index, 1);
         },
-        async setMenuList() {
+        async setMenuList(selectedMenuType) {
+            this.MenuType = selectedMenuType;
             this.fetchMenuList();
             this.MenuName = null;
             this.rows = [];

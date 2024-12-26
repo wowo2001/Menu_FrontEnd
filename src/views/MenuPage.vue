@@ -1,15 +1,16 @@
 ﻿<template>
     <div class="header">
-        <h1>修改菜单</h1>
+        <h1>修改菜谱</h1>
     </div>
 
-    <div class="dropdown-container">
-        <select v-model="MenuType" class="menu-dropdown" @change="setMenuList()">
-            <option value="Main">主菜</option>
-            <option value="Side">配菜</option>
-            <option value="Soup">汤</option>
-            <option value="Lunch">午餐</option>
-        </select>
+    <div>
+        <button v-for="(menu, index) in menuTypes"
+            :key="index"
+            :class="{'selected': MenuType === menu.value}"
+            @click="setMenuList(menu.value)"
+            class="menu-button">
+        {{ menu.text }} <!-- Display custom text for each button -->
+        </button>
     </div>
 
     <div class="dropdown-container" v-if="MenuType !== null">
