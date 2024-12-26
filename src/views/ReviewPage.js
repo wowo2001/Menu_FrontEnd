@@ -80,7 +80,7 @@ export default {
                     this.filterList.push(ingredient.location);
                 }
             });
-            this.$router.push({ path: '/review', query: { menuId: this.menuId, filter: this.filterName } });
+            this.$router.push({ path: '/review', query: { menuId: this.menuId} });
 
         },
         sortTable(column) {
@@ -126,7 +126,7 @@ export default {
                     this.sortedIngredientList.push(ingredient);
                 }
             });
-            this.$router.push({ path: '/review', query: { menuId: this.menuId, filter: this.filterName } });
+            this.$router.push({ path: '/review', query: {filter: this.filterName } });
         },
     },
 
