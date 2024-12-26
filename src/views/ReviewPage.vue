@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <h2>采购清单</h2>
+        <h1>采购清单</h1>
         <!-- Displaying the menuId (current date) -->
         <div class="dropdown-container">
             <select v-model="menuId" class="menu-dropdown" @change="setMenuId(menuId)">
