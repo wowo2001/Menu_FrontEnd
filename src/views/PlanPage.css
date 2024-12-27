@@ -16,7 +16,7 @@ h2 {
 .content {
     display: flex;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     padding: 5px;
 }
 
