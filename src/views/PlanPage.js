@@ -340,7 +340,7 @@ export default {
                         selectPool.push(dish);
                     }
                 });
-                var randomIndex = await this.getRandomInt(0, selectPool.length);
+                var randomIndex = await this.getRandomInt(0, selectPool.length-1);
                 this.selectedMainDish = selectPool[randomIndex];
                 this.handleUpdateDropList(this.selectedMainDish,'main');
             }
@@ -350,7 +350,7 @@ export default {
                         selectPool.push(dish);
                     }
                 });
-                var randomIndex = await this.getRandomInt(0, selectPool.length);
+                var randomIndex = await this.getRandomInt(0, selectPool.length-1);
                 this.selectedSideDish1 = selectPool[randomIndex];
                 this.handleUpdateDropList(this.selectedSideDish1, 'side1');
             }
@@ -360,7 +360,7 @@ export default {
                         selectPool.push(dish);
                     }
                 });
-                var randomIndex = await this.getRandomInt(0, selectPool.length);
+                var randomIndex = await this.getRandomInt(0, selectPool.length-1);
                 this.selectedSideDish2 = selectPool[randomIndex];
                 this.handleUpdateDropList(this.selectedSideDish2, 'side2');
             }
@@ -370,7 +370,7 @@ export default {
                         selectPool.push(dish);
                     }
                 });
-                var randomIndex = await this.getRandomInt(0, selectPool.length);
+                var randomIndex = await this.getRandomInt(0, selectPool.length-1);
                 this.selectedSoup = selectPool[randomIndex];
                 this.handleUpdateDropList(this.selectedSoup, 'soup');
             }
