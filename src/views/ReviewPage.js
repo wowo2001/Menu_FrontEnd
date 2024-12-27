@@ -10,7 +10,6 @@ export default {
             allIngredientList: [], // Will store the list of ingredients
             sortBy: '', // Column to sort by
             sortOrder: 'asc', // Sorting order (ascending or descending)
-            isLoading: false,
             filterList: [],
             filterName: null,
             sortedIngredientList: [],
@@ -20,8 +19,7 @@ export default {
     methods: {
         // Fetch ingredients list from the API
         async fetchIngredientList(menuId) {
-            this.isLoading = true;
-            await this.delay(1000);
+            //await this.delay(1000);
             try {
                 var response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`);
                 this.allIngredientList = response.data.allIngredientList.map(ingredient => ({
@@ -30,12 +28,10 @@ export default {
                 }));
                 this.sortedIngredientList = this.allIngredientList;
                 this.sortTable(this.sortBy);
-                this.isLoading = false;
                 
                 
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
-                this.isLoading = false;
             }
         },
 
@@ -82,6 +78,9 @@ export default {
             });
             if (this.firstOpen) {
                 this.filterName = decodeURIComponent(this.$route.query.filter);
+                if (this.filterName === 'undefined') {
+                    this.filterName = "All";
+                }
                 this.setFilter(this.filterName);
                 this.firstOpen = false;
             }
@@ -134,6 +133,9 @@ export default {
                     this.sortedIngredientList.push(ingredient);
                 }
             });
+            if (this.filterName === "All") {
+                this.sortedIngredientList = this.allIngredientList;
+            }
             this.$router.push({ path: '/review', query: { menuId: this.menuId, filter: encodeURIComponent(this.filterName) } });
         },
     },

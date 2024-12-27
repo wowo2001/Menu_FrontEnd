@@ -62,6 +62,7 @@ export default {
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
             }
+
         },
 
         async postUpdatePurchaseList(request) {

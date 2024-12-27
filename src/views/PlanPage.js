@@ -119,7 +119,7 @@ export default {
         },
 
         async fetchIngredientList(menuId) {
-            await this.delay(500);
+            //await this.delay(500);
             try {
                 const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`);
                 console.log(response.data); // Logs the API response

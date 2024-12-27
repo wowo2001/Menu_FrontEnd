@@ -20,9 +20,6 @@
             </button>
         </div>
 
-        <div v-if="isLoading" class="spinner-overlay">
-            <div class="spinner"></div>
-        </div>
         <!-- Check if the data is loaded before showing the table -->
         <table v-if="sortedIngredientList.length" border="1">
             <thead>
