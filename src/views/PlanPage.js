@@ -139,7 +139,9 @@ export default {
             const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`);
                 // Assuming the response contains the allIngredientList
                 response.data.forEach((menuId, index) => {
-                    this.MenuIdList.push(menuId);
+                    if (!this.MenuIdList.include(menuId)) {
+                        this.MenuIdList.push(menuId);
+                    }
                 });
         } catch(error) {
             console.error("Error fetching ingredient list:", error);
