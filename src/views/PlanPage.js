@@ -95,7 +95,7 @@ export default {
                 const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${menuId}`);
                 
                 const todayChoiceList = response.data.myChoice;
-                if (todayChoiceList.length > 0) {
+                this.clearCache();
                     // Assuming the response contains the allIngredientList
                     todayChoiceList.forEach((item, index) => {
                         if (this.dayOfWeek[this.currentDayIndex] === item.day) {
@@ -107,10 +107,7 @@ export default {
                             this.selectedBaby = item.dish[5];
                         }
                     });
-                }
-                else {
-                    this.clearCache();
-                }
+  
 
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
@@ -139,7 +136,8 @@ export default {
             const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`);
                 // Assuming the response contains the allIngredientList
                 response.data.forEach((menuId, index) => {
-                    if (!this.MenuIdList.include(menuId)) {
+                    console.log(this.MenuIdList);
+                    if (!this.MenuIdList.includes(menuId)) {
                         this.MenuIdList.push(menuId);
                     }
                 });
