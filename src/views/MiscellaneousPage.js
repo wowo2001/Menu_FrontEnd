@@ -10,6 +10,7 @@ export default {
             rows: [
             ],
             menuId: null,
+            isLoading: false,
         };
     },
     mounted() {
@@ -34,6 +35,9 @@ export default {
                 ingredientList = JSON.parse(JSON.stringify(ingredientList));
                 console.log(ingredientList);
                 this.postUpdatePurchaseList(ingredientList);
+                this.isLoading = true;
+                await this.delay(500);
+                this.isLoading = false;
                 this.$router.push({ path:'/review', query: { menuId: this.menuId } });
             }
         },
@@ -83,6 +87,9 @@ export default {
                 }
             });
             return emptyName;
+        },
+        async delay(ms) {
+           return new Promise(resolve => setTimeout(resolve, ms));
         }
     }
 };

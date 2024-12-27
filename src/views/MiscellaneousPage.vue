@@ -4,6 +4,9 @@
   </div>
 
   <div class="container">
+    <div v-if="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+    </div>
 
     <!-- Dynamically generated rows for inputs -->
     <div v-for="(row, index) in rows" :key="index" class="row">
