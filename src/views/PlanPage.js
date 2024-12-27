@@ -7,7 +7,7 @@ export default {
     name: "PlanPage",
     data() {
         return {
-            MenuIdList: null,
+            MenuIdList: [],
             menuId: null,
             dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], // Days of the week
             currentDayIndex :0,
@@ -93,18 +93,24 @@ export default {
         async fetchTodayChoice(menuId) {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${menuId}`);
+                
                 const todayChoiceList = response.data.myChoice;
-                // Assuming the response contains the allIngredientList
-                todayChoiceList.forEach((item, index) => {
-                    if (this.dayOfWeek[this.currentDayIndex] === item.day) {
-                        this.selectedMainDish = item.dish[0];
-                        this.selectedSideDish1 = item.dish[1];
-                        this.selectedSideDish2 = item.dish[2];
-                        this.selectedSoup = item.dish[3];
-                        this.selectedLunch = item.dish[4];
-                        this.selectedBaby = item.dish[5];
-                    }
-                });
+                if (todayChoiceList.length > 0) {
+                    // Assuming the response contains the allIngredientList
+                    todayChoiceList.forEach((item, index) => {
+                        if (this.dayOfWeek[this.currentDayIndex] === item.day) {
+                            this.selectedMainDish = item.dish[0];
+                            this.selectedSideDish1 = item.dish[1];
+                            this.selectedSideDish2 = item.dish[2];
+                            this.selectedSoup = item.dish[3];
+                            this.selectedLunch = item.dish[4];
+                            this.selectedBaby = item.dish[5];
+                        }
+                    });
+                }
+                else {
+                    this.clearCache();
+                }
 
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
@@ -122,7 +128,6 @@ export default {
             //await this.delay(500);
             try {
                 const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`);
-                console.log(response.data); // Logs the API response
 
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
@@ -132,16 +137,17 @@ export default {
         async fetchAllPurchaseList() {
             try {
             const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`);
-            console.log(response.data); // Logs the API response
                 // Assuming the response contains the allIngredientList
-            this.MenuIdList = response.data;
-            console.log(this.MenuIdList);
+                response.data.forEach((menuId, index) => {
+                    this.MenuIdList.push(menuId);
+                });
         } catch(error) {
             console.error("Error fetching ingredient list:", error);
         }
         },
         async setMenuId(menuId) {
             this.menuId = menuId;
+            console.log(this.menuId);
             this.fetchTodayChoice(this.menuId);
             this.currentDayIndex = 0;
         },
@@ -149,6 +155,7 @@ export default {
             const today = new Date();
             const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
             this.menuId = today.toLocaleDateString('en-US', options);
+            this.MenuIdList.push(this.menuId);
             return this.menuId // Format as MM/DD/YYYY
         },
         delay(ms) {
@@ -163,8 +170,6 @@ export default {
                     }
                 });
                 var notExistingPurchaseList = response.data.id == null;
-                console.log(notExistingPurchaseList);
- 
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
             }
@@ -272,22 +277,10 @@ export default {
             return thisWeeksMenu.has(dishName);
         },
         clickNextButton() {
-            console.log(this.currentDayIndex);
             if (this.currentDayIndex < 4) {
                 this.fetchTodayChoice(this.menuId);
                 this.currentDayIndex++;
-                this.selectedMainDish = null;
-                this.selectedSideDish1 = null;
-                this.selectedSideDish2 = null;
-                this.selectedSoup = null;
-                this.selectedLunch = null;
-                this.selectedBaby = null;
-                this.mainDishIngredients = [];
-                this.sideDish1Ingredients = [];
-                this.sideDish2Ingredients = [];
-                this.soupIngredients = [];
-                this.lunchIngredients = [];
-                this.babyIngredients = [];
+                this.clearCache();
             }
             else {
                 this.fetchIngredientList(this.menuId);
@@ -298,22 +291,14 @@ export default {
         clickPreviousButton() {
             this.fetchTodayChoice(this.menuId);
             this.currentDayIndex--;
-            this.selectedMainDish = null;
-            this.selectedSideDish1 = null;
-            this.selectedSideDish2 = null;
-            this.selectedSoup = null;
-            this.selectedLunch = null;
-            this.selectedBaby = null;
-            this.mainDishIngredients = [];
-            this.sideDish1Ingredients = [];
-            this.sideDish2Ingredients = [];
-            this.soupIngredients = [];
-            this.lunchIngredients = [];
-            this.babyIngredients = [];
+            this.clearCache();
         },
         setDay(day) {
             this.fetchTodayChoice(this.menuId);
             this.currentDayIndex = day;
+            this.clearCache();
+        },
+        clearCache() {
             this.selectedMainDish = null;
             this.selectedSideDish1 = null;
             this.selectedSideDish2 = null;
@@ -326,6 +311,12 @@ export default {
             this.soupIngredients = [];
             this.lunchIngredients = [];
             this.babyIngredients = [];
+            this.previousSelectedMainDish = null;
+            this.previousSelectedSideDish1 = null;
+            this.previousSelectedSideDish2 = null;
+            this.previousSelectedSoup = null;
+            this.previousSelectedLunch = null;
+            this.previousSelectedBaby = null;
         }
 
     },
