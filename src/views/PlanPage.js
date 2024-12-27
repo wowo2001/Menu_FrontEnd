@@ -10,7 +10,8 @@ export default {
             MenuIdList: [],
             menuId: null,
             dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], // Days of the week
-            currentDayIndex :0,
+            currentDayIndex: 0,
+            menuDataMain: [],
             menuDataSide: [],           // Menu data for Side Dishes
             menuDataSoup: [],           // Menu data for Soups
             menuDataLunch: [],
@@ -317,6 +318,65 @@ export default {
             this.previousSelectedSoup = null;
             this.previousSelectedLunch = null;
             this.previousSelectedBaby = null;
+        },
+        async randomSelect(dishType) {
+            try {
+                const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`);
+                const todayChoiceList = response.data.myChoice;
+                var thisWeeksMenu = [];
+                todayChoiceList.forEach((item, index) => {
+                    item.dish.forEach((dish, index) => {
+                        thisWeeksMenu.push(dish);
+                    });
+                });
+            } catch (error) {
+                console.error("Error fetching ingredient list:", error);
+            }
+  
+            var selectPool = [];
+            if (dishType === 'main') {
+                this.menuDataMain.forEach((dish, index) => {
+                    if (!thisWeeksMenu.includes(dish)) {
+                        selectPool.push(dish);
+                    }
+                });
+                var randomIndex = await this.getRandomInt(0, selectPool.length);
+                this.selectedMainDish = selectPool[randomIndex];
+                this.handleUpdateDropList(this.selectedMainDish,'main');
+            }
+            if (dishType === 'side1') {
+                this.menuDataSide.forEach((dish, index) => {
+                    if (!thisWeeksMenu.includes(dish)) {
+                        selectPool.push(dish);
+                    }
+                });
+                var randomIndex = await this.getRandomInt(0, selectPool.length);
+                this.selectedSideDish1 = selectPool[randomIndex];
+                this.handleUpdateDropList(this.selectedSideDish1, 'side1');
+            }
+            if (dishType === 'side2') {
+                this.menuDataSide.forEach((dish, index) => {
+                    if (!thisWeeksMenu.includes(dish)) {
+                        selectPool.push(dish);
+                    }
+                });
+                var randomIndex = await this.getRandomInt(0, selectPool.length);
+                this.selectedSideDish2 = selectPool[randomIndex];
+                this.handleUpdateDropList(this.selectedSideDish2, 'side2');
+            }
+            if (dishType === 'soup') {
+                this.menuDataSoup.forEach((dish, index) => {
+                    if (!thisWeeksMenu.includes(dish)) {
+                        selectPool.push(dish);
+                    }
+                });
+                var randomIndex = await this.getRandomInt(0, selectPool.length);
+                this.selectedSoup = selectPool[randomIndex];
+                this.handleUpdateDropList(this.selectedSoup, 'soup');
+            }
+        },
+        async getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
     },

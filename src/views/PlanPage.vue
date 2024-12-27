@@ -41,166 +41,187 @@
 
 
         <div class="plan-section">
-            <h2>主菜</h2>
-            <!-- Main Dish -->
             <div class="content">
-                <div class="dropdown-container">
-                    <select v-model="selectedMainDish" class="menu-dropdown" @change="handleUpdateDropList(selectedMainDish, 'main')">
-                        <option value="" disabled selected>选择一个主菜</option>
-                        <option v-for="(menu, index) in menuDataMain" :key="index" :value="menu">
-                            {{ menu }}
-                        </option>
-                    </select>
-                </div>
-
-                <div v-if="mainDishIngredients.length" class="table-container">
-                    <table class="ingredients-table">
-                        <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>数量</th>
-                                <th>单位</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(ingredient, index) in mainDishIngredients" :key="index">
-                                <td>{{ ingredient.name }}</td>
-                                <td>{{ ingredient.amount }}</td>
-                                <td>{{ ingredient.unit }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <h2>主菜</h2>
+                <button @click="randomSelect('main')" class="graphic-button">
+                    <img src="@/assets/die-image.png" alt="Button Graphic" class="button-image" />
+                </button>
             </div>
 
-            <!-- Side Dish 1 -->
-            <h2>配菜</h2>
-            <div class="content">
-                <div class="dropdown-container">
-                    <select v-model="selectedSideDish1" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish1, 'side1')">
-                        <option value="" disabled selected>选择一个配菜</option>
-                        <option v-for="(menu, index) in menuDataSide" :key="index" :value="menu">
-                            {{ menu }}
-                        </option>
-                    </select>
+                <!-- Main Dish -->
+                <div class="content">
+                    <div class="dropdown-container">
+                        <select v-model="selectedMainDish" class="menu-dropdown" @change="handleUpdateDropList(selectedMainDish, 'main')">
+                            <option value="" disabled selected>选择一个主菜</option>
+                            <option v-for="(menu, index) in menuDataMain" :key="index" :value="menu">
+                                {{ menu }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div v-if="mainDishIngredients.length" class="table-container">
+                        <table class="ingredients-table">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>数量</th>
+                                    <th>单位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(ingredient, index) in mainDishIngredients" :key="index">
+                                    <td>{{ ingredient.name }}</td>
+                                    <td>{{ ingredient.amount }}</td>
+                                    <td>{{ ingredient.unit }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div v-if="sideDish1Ingredients.length" class="table-container">
-                    <table class="ingredients-table">
-                        <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>数量</th>
-                                <th>单位</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(ingredient, index) in sideDish1Ingredients" :key="index">
-                                <td>{{ ingredient.name }}</td>
-                                <td>{{ ingredient.amount }}</td>
-                                <td>{{ ingredient.unit }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Side Dish 1 -->
+                <div class="content">
+                    <h2>配菜</h2>
+                    <button @click="randomSelect('side1')" class="graphic-button">
+                        <img src="@/assets/die-image.png" alt="Button Graphic" class="button-image" />
+                    </button>
                 </div>
-            </div>
+                <div class="content">
+                    <div class="dropdown-container">
+                        <select v-model="selectedSideDish1" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish1, 'side1')">
+                            <option value="" disabled selected>选择一个配菜</option>
+                            <option v-for="(menu, index) in menuDataSide" :key="index" :value="menu">
+                                {{ menu }}
+                            </option>
+                        </select>
+                    </div>
 
-            <!-- Side Dish 2 -->
-            <h2>配菜</h2>
-            <div class="content">
-                <div class="dropdown-container">
-                    <select v-model="selectedSideDish2" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish2, 'side2')">
-                        <option value="" disabled selected>选择一个配菜</option>
-                        <option v-for="(menu, index) in menuDataSide" :key="index" :value="menu">
-                            {{ menu }}
-                        </option>
-                    </select>
-                </div>
-
-                <div v-if="sideDish2Ingredients.length" class="table-container">
-                    <table class="ingredients-table">
-                        <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>数量</th>
-                                <th>单位</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(ingredient, index) in sideDish2Ingredients" :key="index">
-                                <td>{{ ingredient.name }}</td>
-                                <td>{{ ingredient.amount }}</td>
-                                <td>{{ ingredient.unit }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Soup -->
-            <h2>汤</h2>
-            <div class="content">
-                <div class="dropdown-container">
-                    <select v-model="selectedSoup" class="menu-dropdown" @change="handleUpdateDropList(selectedSoup, 'soup')">
-                        <option value="" disabled selected>选择一个汤</option>
-                        <option v-for="(menu, index) in menuDataSoup" :key="index" :value="menu">
-                            {{ menu }}
-                        </option>
-                    </select>
+                    <div v-if="sideDish1Ingredients.length" class="table-container">
+                        <table class="ingredients-table">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>数量</th>
+                                    <th>单位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(ingredient, index) in sideDish1Ingredients" :key="index">
+                                    <td>{{ ingredient.name }}</td>
+                                    <td>{{ ingredient.amount }}</td>
+                                    <td>{{ ingredient.unit }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div v-if="soupIngredients.length" class="table-container">
-                    <table class="ingredients-table">
-                        <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>数量</th>
-                                <th>单位</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(ingredient, index) in soupIngredients" :key="index">
-                                <td>{{ ingredient.name }}</td>
-                                <td>{{ ingredient.amount }}</td>
-                                <td>{{ ingredient.unit }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Side Dish 2 -->
+                <div class="content">
+                    <h2>配菜</h2>
+                    <button @click="randomSelect('side2')" class="graphic-button">
+                        <img src="@/assets/die-image.png" alt="Button Graphic" class="button-image" />
+                    </button>
                 </div>
-            </div>
+                <div class="content">
+                    <div class="dropdown-container">
+                        <select v-model="selectedSideDish2" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish2, 'side2')">
+                            <option value="" disabled selected>选择一个配菜</option>
+                            <option v-for="(menu, index) in menuDataSide" :key="index" :value="menu">
+                                {{ menu }}
+                            </option>
+                        </select>
+                    </div>
 
-            <h2>午餐</h2>
-            <div class="content">
-                <div class="dropdown-container">
-                    <select v-model="selectedLunch" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'lunch')">
-                        <option value="" disabled selected>选择一个午餐</option>
-                        <option v-for="(menu, index) in menuDataLunch" :key="index" :value="menu">
-                            {{ menu }}
-                        </option>
-                    </select>
+                    <div v-if="sideDish2Ingredients.length" class="table-container">
+                        <table class="ingredients-table">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>数量</th>
+                                    <th>单位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(ingredient, index) in sideDish2Ingredients" :key="index">
+                                    <td>{{ ingredient.name }}</td>
+                                    <td>{{ ingredient.amount }}</td>
+                                    <td>{{ ingredient.unit }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div v-if="lunchIngredients.length" class="table-container">
-                    <table class="ingredients-table">
-                        <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>数量</th>
-                                <th>单位</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(ingredient, index) in lunchIngredients" :key="index">
-                                <td>{{ ingredient.name }}</td>
-                                <td>{{ ingredient.amount }}</td>
-                                <td>{{ ingredient.unit }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Soup -->
+                <div class="content">
+                    <h2>汤</h2>
+                    <button @click="randomSelect('soup')" class="graphic-button">
+                        <img src="@/assets/die-image.png" alt="Button Graphic" class="button-image" />
+                    </button>
                 </div>
-            </div>
+                <div class="content">
+                    <div class="dropdown-container">
+                        <select v-model="selectedSoup" class="menu-dropdown" @change="handleUpdateDropList(selectedSoup, 'soup')">
+                            <option value="" disabled selected>选择一个汤</option>
+                            <option v-for="(menu, index) in menuDataSoup" :key="index" :value="menu">
+                                {{ menu }}
+                            </option>
+                        </select>
+                    </div>
 
-            <!--<div class="content">
+                    <div v-if="soupIngredients.length" class="table-container">
+                        <table class="ingredients-table">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>数量</th>
+                                    <th>单位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(ingredient, index) in soupIngredients" :key="index">
+                                    <td>{{ ingredient.name }}</td>
+                                    <td>{{ ingredient.amount }}</td>
+                                    <td>{{ ingredient.unit }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h2>午餐</h2>
+                <div class="content">
+                    <div class="dropdown-container">
+                        <select v-model="selectedLunch" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'lunch')">
+                            <option value="" disabled selected>选择一个午餐</option>
+                            <option v-for="(menu, index) in menuDataLunch" :key="index" :value="menu">
+                                {{ menu }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div v-if="lunchIngredients.length" class="table-container">
+                        <table class="ingredients-table">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>数量</th>
+                                    <th>单位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(ingredient, index) in lunchIngredients" :key="index">
+                                    <td>{{ ingredient.name }}</td>
+                                    <td>{{ ingredient.amount }}</td>
+                                    <td>{{ ingredient.unit }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!--<div class="content">
             <div class="dropdown-container">
                 <select v-model="selectedBaby" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'baby')">
                     <option value="" disabled selected>选择一个宝宝餐</option>
@@ -229,9 +250,9 @@
                 </table>
             </div>
         </div>-->
-        </div>
+            </div>
 
-    </div>
+        </div>
 </template>
 
 <script src="./PlanPage.js"></script> <!-- Link to the JS file -->

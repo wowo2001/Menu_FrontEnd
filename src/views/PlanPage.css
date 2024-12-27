@@ -6,14 +6,14 @@
 h2 {
     color: #333;
     margin-top: 10px;
-    width: 100%;
-    font-size: 18px;
+    width: 3%;
+    font-size: 22px;
     text-align: left;
 }
 
 .content {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     margin-top: 20px;
     padding: 0;
@@ -135,4 +135,23 @@ button {
 .single-button-container {
     width:15%;
     padding:1%;
+}
+
+.graphic-button {
+    margin-top: 10px;
+    width: 30px;
+    height: 30px;
+    align-items: flex-start;
+    padding: 0px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.button-image {
+    width: 30px; /* Size of the image */
+    height: 30px;
+    margin-right: 10px; /* Space between the image and text */
 }
