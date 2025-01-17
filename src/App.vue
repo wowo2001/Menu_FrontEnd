@@ -6,8 +6,8 @@
             <span style="font-size: 1.6rem;"> {{  value}} </span>
         </el-header
       >
-      <el-main style="padding: 0;text-align: center;"><router-view > </router-view></el-main>
-      <el-footer style="padding: 0;text-align: center;">
+      <el-main style="padding: 0;text-align: center;height: 47rem;"><router-view > </router-view></el-main>
+      <el-footer style="padding: 0;text-align: center; margin-bottom: 0;">
        
      
           <el-segmented
