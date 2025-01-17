@@ -223,7 +223,7 @@
         </div>
       </el-col>
 
-      <el-col :span="24" style="margin-top: 1rem">
+      <el-col :span="24" style="margin-top: 1rem;margin-bottom: 1rem;">
         <div class="content">
           <el-text
             size="large"
@@ -263,14 +263,7 @@
       </el-col>
     </el-row>
   </div>
-  <div class="plan-page">
-    <div class="header">
-      <div class="demo-date-picker">
-        <div class="container"></div>
-      </div>
-      <div></div>
-    </div>
-  </div>
+
 </template>
 
 <script lang="ts" src="./PlanPage.js">
