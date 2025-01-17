@@ -59,11 +59,11 @@ button {
 }
 
     .menu-button.selected {
-        background-color: #007bff;
+        background-color: #ab2b3a;
         color: white;
     }
 
     .menu-button:hover {
-        background-color: #007bff;
+        background-color: #ab2b3a;
         color: white;
     }
