@@ -1,15 +1,15 @@
 ﻿<template>
-  <div class="common-layout">
+ <div >
     <el-container>
-      <el-header>
-        <el-affix :offset="0" style="text-align: center;padding: 1rem;">
+      <el-header style="padding: 0;text-align: center;">
+     
             <span style="font-size: 1.6rem;"> {{  value}} </span>
-        </el-affix></el-header
+        </el-header
       >
-      <el-main style="height: 1000px;"><router-view class="container"> </router-view></el-main>
-      <el-footer style="margin-bottom: 1rem;">
-        <el-affix style="text-align: center;" position="bottom" :offset="0">
-            <div class="custom-style">
+      <el-main style="padding: 0;text-align: center;"><router-view > </router-view></el-main>
+      <el-footer style="padding: 0;text-align: center;">
+       
+     
           <el-segmented
             v-model="value"
             :options="options"
@@ -35,8 +35,8 @@
               </div>
             </template>
           </el-segmented>
-        </div>
-        </el-affix>
+    
+
       </el-footer>
     </el-container>
   </div>

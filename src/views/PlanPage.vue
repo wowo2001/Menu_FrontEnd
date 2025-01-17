@@ -2,9 +2,8 @@
   <div>
     <el-row>
       <el-col :span="24">
-        <div style="display: flex"></div>
-
-        <el-button-group style="display: flex">
+      <div style="width: 100%;">
+        <el-button-group style="display: flex;">
           <el-button
             color="#ab2b3a"
             v-for="(Id, index) in MenuIdList"
@@ -14,6 +13,8 @@
             >{{ Id }}</el-button
           >
         </el-button-group>
+      </div>
+ 
       </el-col>
 
       <el-col :span="24">
@@ -265,70 +266,10 @@
       </div>
       <div></div>
 
-      <div class="button-container"></div>
+
     </div>
 
-    <!-- <div class="button-container">
-      <div class="single-button-container">
-        <button
-          class="previous-next-button left"
-          @click="clickPreviousButton"
-          v-show="currentDayIndex > 0"
-        >
-          上一页
-        </button>
-      </div>
-      <div class="single-button-container">
-        <button
-          class="day-button left"
-          @click="setDay(0)"
-          :class="{ selected: currentDayIndex == 0 }"
-        >
-          周一
-        </button>
-      </div>
-      <div class="single-button-container">
-        <button
-          class="day-button left"
-          @click="setDay(1)"
-          :class="{ selected: currentDayIndex == 1 }"
-        >
-          周二
-        </button>
-      </div>
-      <div class="single-button-container">
-        <button
-          class="day-button left"
-          @click="setDay(2)"
-          :class="{ selected: currentDayIndex == 2 }"
-        >
-          周三
-        </button>
-      </div>
-      <div class="single-button-container">
-        <button
-          class="day-button left"
-          @click="setDay(3)"
-          :class="{ selected: currentDayIndex == 3 }"
-        >
-          周四
-        </button>
-      </div>
-      <div class="single-button-container">
-        <button
-          class="day-button left"
-          @click="setDay(4)"
-          :class="{ selected: currentDayIndex == 4 }"
-        >
-          周五
-        </button>
-      </div>
-      <div class="single-button-container">
-        <button class="previous-next-button right" @click="clickNextButton">
-          <el-icon class="el-icon--right"><ArrowRight /></el-icon>
-        </button>
-      </div>
-    </div> -->
+   
 
 
   </div>
