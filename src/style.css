@@ -77,3 +77,14 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* 禁用元素的滚动条 */
+.no-scrollbar {
+  overflow: hidden; /* 隐藏滚动条，但仍然可以滚动 */
+}
+ 
+/* 完全禁用滚动，包括通过触摸屏或轮轮的滚动 */
+.no-scrollbar-complete {
+  overflow: hidden; /* 隐藏滚动条 */
+  overscroll-behavior: contain; /* 阻止滚动传递到父元素 */
+}

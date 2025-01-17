@@ -4,15 +4,7 @@
 </template>
 
 <script lang="ts" >
-import { ref } from 'vue'
-import { ElButton } from 'element-plus'
-
-
-
-  export default {
-    components: { ElButton },
-  }</script> <!-- Link to the JS file -->
-
+</script>
   <style>
 .demo-tabs > .el-tabs__content {
   padding: 32px;
