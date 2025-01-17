@@ -88,3 +88,7 @@ button:focus-visible {
   overflow: hidden; /* 隐藏滚动条 */
   overscroll-behavior: contain; /* 阻止滚动传递到父元素 */
 }
+
+html {
+    touch-action: manipulation;
+}
