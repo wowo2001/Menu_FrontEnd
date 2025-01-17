@@ -1,258 +1,355 @@
 ﻿<template>
-    <div class="plan-page">
-        <div class="header">
-            <h1>菜单规划</h1>
-            <div class="button-container">
-                <button v-for="(Id, index) in MenuIdList"
-                        :key="index"
-                        :class="['menu-id-button', {'selected': menuId === Id}]"
-                        @click="setMenuId(Id)">
-                    {{ Id }}
-                </button>
-            </div>
+  <div>
+    <el-row>
+      <el-col :span="24">
+        <div style="display: flex"></div>
 
-        </div>
+        <el-button-group style="display: flex">
+          <el-button
+            color="#ab2b3a"
+            v-for="(Id, index) in MenuIdList"
+            :key="index"
+            @click="setMenuId(Id)"
+            :class="['menu-id-button', { selected: menuId === Id }]"
+            >{{ Id }}</el-button
+          >
+        </el-button-group>
+      </el-col>
 
-        
+      <el-col :span="24">
+        <el-button-group style="display: flex">
+          <el-button color="#9f6955" type="primary" @click="clickPreviousButton"
+            ><el-icon><ArrowLeft /></el-icon
+          ></el-button>
+          <el-button color="#9f6955" type="primary" @click="setDay(0)"
+            >周一</el-button
+          >
+          <el-button color="#9f6955" type="primary" @click="setDay(1)"
+            >周二</el-button
+          >
+          <el-button color="#9f6955" type="primary" @click="setDay(2)"
+            >周三</el-button
+          >
+          <el-button color="#9f6955" type="primary" @click="setDay(3)"
+            >周四</el-button
+          >
+          <el-button color="#9f6955" type="primary" @click="setDay(4)"
+            >周五</el-button
+          >
+          <el-button color="#9f6955" type="primary" @click="clickNextButton"
+            ><el-icon><ArrowRight /></el-icon
+          ></el-button>
+        </el-button-group>
+      </el-col>
 
-        <div class="button-container">
-            <div class="single-button-container">
-                <button class="previous-next-button left" @click="clickPreviousButton" v-show="currentDayIndex > 0">上一页</button>
-            </div>
-            <div class="single-button-container">
-                <button class="day-button left" @click="setDay(0)" :class="{'selected': currentDayIndex == 0}">星期一</button>
-            </div>
-            <div class="single-button-container">
-                <button class="day-button left" @click="setDay(1)" :class="{'selected': currentDayIndex == 1}">星期二</button>
-            </div>
-            <div class="single-button-container">
-                <button class="day-button left" @click="setDay(2)" :class="{'selected': currentDayIndex == 2}">星期三</button>
-            </div>
-            <div class="single-button-container">
-                <button class="day-button left" @click="setDay(3)" :class="{'selected': currentDayIndex == 3}">星期四</button>
-            </div>
-            <div class="single-button-container">
-                <button class="day-button left" @click="setDay(4)" :class="{'selected': currentDayIndex == 4}">星期五</button>
-            </div>
-            <div class="single-button-container">
-                <button class="previous-next-button right" @click="clickNextButton">下一页</button>
-            </div>
-        </div>
-
-
+      <el-col :span="24" style="margin-top: 1rem">
         <div class="plan-section">
-            <div class="content">
-                <h2>主菜</h2>
-                <button @click="randomSelect('main')" class="graphic-button">
-                    <img src="@/assets/die-image.png" alt="Button Graphic" class="button-image" />
-                </button>
-            </div>
+          <div class="content">
+            <el-text size="large" style="color:#000;font-weight: bolder;font-size: 1.4rem;">主菜</el-text>
+            <el-button
+              color="#f1e6d8"
+              @click="randomSelect('main')"
+              class="graphic-button"
+            >
+              <el-icon size="1rem"><Refresh /></el-icon>
+            </el-button>
+            <el-select
+              v-model="selectedMainDish"
+              filterable
+              placeholder="Select"
+              @change="handleUpdateDropList(selectedMainDish, 'main')"
+              style="width: 10rem"
+            >
+              <el-option
+                v-for="(menu, index) in menuDataMain"
+                :key="index"
+                :label="menu"
+                :value="menu"
+              />
+            </el-select>
+          </div>
 
-                <!-- Main Dish -->
-                <div class="content">
-                    <div class="dropdown-container">
-                        <select v-model="selectedMainDish" class="menu-dropdown" @change="handleUpdateDropList(selectedMainDish, 'main')">
-                            <option value="" disabled selected>选择一个主菜</option>
-                            <option v-for="(menu, index) in menuDataMain" :key="index" :value="menu">
-                                {{ menu }}
-                            </option>
-                        </select>
-                    </div>
+          <!-- Main Dish -->
+          <div class="content">
 
-                    <div v-if="mainDishIngredients.length" class="table-container">
-                        <table class="ingredients-table">
-                            <thead>
-                                <tr>
-                                    <th>名称</th>
-                                    <th>数量</th>
-                                    <th>单位</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(ingredient, index) in mainDishIngredients" :key="index">
-                                    <td>{{ ingredient.name }}</td>
-                                    <td>{{ ingredient.amount }}</td>
-                                    <td>{{ ingredient.unit }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
 
-                <!-- Side Dish 1 -->
-                <div class="content">
-                    <h2>配菜</h2>
-                    <button @click="randomSelect('side1')" class="graphic-button">
-                        <img src="@/assets/die-image.png" alt="Button Graphic" class="button-image" />
-                    </button>
-                </div>
-                <div class="content">
-                    <div class="dropdown-container">
-                        <select v-model="selectedSideDish1" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish1, 'side1')">
-                            <option value="" disabled selected>选择一个配菜</option>
-                            <option v-for="(menu, index) in menuDataSide" :key="index" :value="menu">
-                                {{ menu }}
-                            </option>
-                        </select>
-                    </div>
+            <el-table :data="mainDishIngredients"  table-layout="fixed">
+              <el-table-column prop="name" label="名称"  />
+              <el-table-column prop="amount" label="数量"  />
+              <el-table-column prop="unit" label="单位"  />
+            </el-table>
 
-                    <div v-if="sideDish1Ingredients.length" class="table-container">
-                        <table class="ingredients-table">
-                            <thead>
-                                <tr>
-                                    <th>名称</th>
-                                    <th>数量</th>
-                                    <th>单位</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(ingredient, index) in sideDish1Ingredients" :key="index">
-                                    <td>{{ ingredient.name }}</td>
-                                    <td>{{ ingredient.amount }}</td>
-                                    <td>{{ ingredient.unit }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <!-- <div v-if="mainDishIngredients.length" class="table-container">
+              <table class="ingredients-table">
+                <thead>
+                  <tr>
+                    <th>名称</th>
+                    <th>数量</th>
+                    <th>单位</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(ingredient, index) in mainDishIngredients"
+                    :key="index"
+                  >
+                    <td>{{ ingredient.name }}</td>
+                    <td>{{ ingredient.amount }}</td>
+                    <td>{{ ingredient.unit }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+          </div>
 
-                <!-- Side Dish 2 -->
-                <div class="content">
-                    <h2>配菜</h2>
-                    <button @click="randomSelect('side2')" class="graphic-button">
-                        <img src="@/assets/die-image.png" alt="Button Graphic" class="button-image" />
-                    </button>
-                </div>
-                <div class="content">
-                    <div class="dropdown-container">
-                        <select v-model="selectedSideDish2" class="menu-dropdown" @change="handleUpdateDropList(selectedSideDish2, 'side2')">
-                            <option value="" disabled selected>选择一个配菜</option>
-                            <option v-for="(menu, index) in menuDataSide" :key="index" :value="menu">
-                                {{ menu }}
-                            </option>
-                        </select>
-                    </div>
 
-                    <div v-if="sideDish2Ingredients.length" class="table-container">
-                        <table class="ingredients-table">
-                            <thead>
-                                <tr>
-                                    <th>名称</th>
-                                    <th>数量</th>
-                                    <th>单位</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(ingredient, index) in sideDish2Ingredients" :key="index">
-                                    <td>{{ ingredient.name }}</td>
-                                    <td>{{ ingredient.amount }}</td>
-                                    <td>{{ ingredient.unit }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Soup -->
-                <div class="content">
-                    <h2>汤</h2>
-                    <button @click="randomSelect('soup')" class="graphic-button">
-                        <img src="@/assets/die-image.png" alt="Button Graphic" class="button-image" />
-                    </button>
-                </div>
-                <div class="content">
-                    <div class="dropdown-container">
-                        <select v-model="selectedSoup" class="menu-dropdown" @change="handleUpdateDropList(selectedSoup, 'soup')">
-                            <option value="" disabled selected>选择一个汤</option>
-                            <option v-for="(menu, index) in menuDataSoup" :key="index" :value="menu">
-                                {{ menu }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div v-if="soupIngredients.length" class="table-container">
-                        <table class="ingredients-table">
-                            <thead>
-                                <tr>
-                                    <th>名称</th>
-                                    <th>数量</th>
-                                    <th>单位</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(ingredient, index) in soupIngredients" :key="index">
-                                    <td>{{ ingredient.name }}</td>
-                                    <td>{{ ingredient.amount }}</td>
-                                    <td>{{ ingredient.unit }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <h2>午餐</h2>
-                <div class="content">
-                    <div class="dropdown-container">
-                        <select v-model="selectedLunch" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'lunch')">
-                            <option value="" disabled selected>选择一个午餐</option>
-                            <option v-for="(menu, index) in menuDataLunch" :key="index" :value="menu">
-                                {{ menu }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div v-if="lunchIngredients.length" class="table-container">
-                        <table class="ingredients-table">
-                            <thead>
-                                <tr>
-                                    <th>名称</th>
-                                    <th>数量</th>
-                                    <th>单位</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(ingredient, index) in lunchIngredients" :key="index">
-                                    <td>{{ ingredient.name }}</td>
-                                    <td>{{ ingredient.amount }}</td>
-                                    <td>{{ ingredient.unit }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!--<div class="content">
-            <div class="dropdown-container">
-                <select v-model="selectedBaby" class="menu-dropdown" @change="handleUpdateDropList(selectedLunch, 'baby')">
-                    <option value="" disabled selected>选择一个宝宝餐</option>
-                    <option v-for="(menu, index) in menuDataBaby" :key="index" :value="menu">
-                        {{ menu }}
-                    </option>
-                </select>
-            </div>
-
-            <div v-if="babyIngredients.length" class="table-container">
-                <table class="ingredients-table">
-                    <thead>
-                        <tr>
-                            <th>名称</th>
-                            <th>数量</th>
-                            <th>单位</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(ingredient, index) in babyIngredients" :key="index">
-                            <td>{{ ingredient.name }}</td>
-                            <td>{{ ingredient.amount }}</td>
-                            <td>{{ ingredient.unit }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>-->
-            </div>
 
         </div>
+      </el-col>
+
+      <el-col :span="24" style="margin-top: 1rem">
+        <div class="content">
+            <el-text size="large" style="color:#000;font-weight: bolder;font-size: 1.4rem;">配菜</el-text>
+            <el-button
+              color="#f1e6d8"
+              @click="randomSelect('side1')"
+              class="graphic-button"
+            >
+              <el-icon size="1rem"><Refresh /></el-icon>
+            </el-button>
+            <el-select
+              v-model="selectedSideDish1"
+              filterable
+              placeholder="Select"
+              @change="handleUpdateDropList(selectedSideDish1, 'side1')"
+              style="width: 10rem"
+            >
+              <el-option
+               v-for="(menu, index) in menuDataSide"
+                  :key="index"
+                  :value="menu"
+              />
+            </el-select>
+          </div>
+
+          <!-- Main Dish -->
+          <div class="content">
+
+
+            <el-table :data="sideDish1Ingredients"  table-layout="fixed">
+              <el-table-column prop="name" label="名称"  />
+              <el-table-column prop="amount" label="数量"  />
+              <el-table-column prop="unit" label="单位"  />
+            </el-table>
+
+          </div>
+      </el-col>
+      <el-col :span="24" style="margin-top: 1rem">
+        <div class="content">
+            <el-text size="large" style="color:#000;font-weight: bolder;font-size: 1.4rem;">配菜</el-text>
+            <el-button
+              color="#f1e6d8"
+              @click="randomSelect('side2')"
+              class="graphic-button"
+            >
+              <el-icon size="1rem"><Refresh /></el-icon>
+            </el-button>
+            <el-select
+              v-model="selectedSideDish2"
+              filterable
+              placeholder="Select"
+              @change="handleUpdateDropList(selectedSideDish2, 'side2')"
+              style="width: 10rem"
+            >
+              <el-option
+               v-for="(menu, index) in menuDataSide"
+                  :key="index"
+                  :value="menu"
+              />
+            </el-select>
+          </div>
+
+          <!-- Main Dish -->
+          <div class="content">
+
+
+            <el-table :data="sideDish2Ingredients"  table-layout="fixed">
+              <el-table-column prop="name" label="名称"  />
+              <el-table-column prop="amount" label="数量"  />
+              <el-table-column prop="unit" label="单位"  />
+            </el-table>
+
+          </div>
+      </el-col>
+      <el-col :span="24" style="margin-top: 1rem">
+        <div class="content">
+            <el-text size="large" style="color:#000;font-weight: bolder;font-size: 1.4rem;">汤</el-text>
+            <el-button
+              color="#f1e6d8"
+              @click="randomSelect('side2')"
+              class="graphic-button"
+            >
+              <el-icon size="1rem"><Refresh /></el-icon>
+            </el-button>
+            <el-select
+              v-model="selectedSoup"
+              filterable
+              placeholder="Select"
+              @change="handleUpdateDropList(selectedSoup, 'soup')"
+              style="width: 10rem"
+            >
+              <el-option
+               v-for="(menu, index) in menuDataSoup"
+                  :key="index"
+                  :value="menu"
+              />
+            </el-select>
+          </div>
+
+          <!-- Main Dish -->
+          <div class="content">
+
+
+            <el-table :data="soupIngredients" table-layout="fixed">
+              <el-table-column prop="name" label="名称"  />
+              <el-table-column prop="amount" label="数量"  />
+              <el-table-column prop="unit" label="单位"  />
+            </el-table>
+
+          </div>
+      </el-col>
+
+      <el-col :span="24" style="margin-top: 1rem">
+        <div class="content">
+            <el-text size="large" style="color:#000;font-weight: bolder;font-size: 1.4rem;">午餐</el-text>
+            <el-button
+              color="#f1e6d8"
+              @click="randomSelect('lunch')"
+              class="graphic-button"
+            >
+              <el-icon size="1rem"><Refresh /></el-icon>
+            </el-button>
+            <el-select
+              v-model="selectedLunch"
+              filterable
+              placeholder="Select"
+              @change="handleUpdateDropList(selectedLunch, 'lunch')"
+              style="width: 10rem"
+            >
+              <el-option
+               v-for="(menu, index) in menuDataLunch"
+                  :key="index"
+                  :value="menu"
+              />
+            </el-select>
+          </div>
+
+          <!-- Main Dish -->
+          <div class="content">
+
+
+            <el-table :data="lunchIngredients"  table-layout="fixed">
+              <el-table-column prop="name" label="名称"  />
+              <el-table-column prop="amount" label="数量"  />
+              <el-table-column prop="unit" label="单位"  />
+            </el-table>
+
+          </div>
+      </el-col>
+    </el-row>
+  </div>
+  <div class="plan-page">
+    <div class="header">
+      <div class="demo-date-picker">
+        <div class="container"></div>
+      </div>
+      <div></div>
+
+      <div class="button-container"></div>
+    </div>
+
+    <!-- <div class="button-container">
+      <div class="single-button-container">
+        <button
+          class="previous-next-button left"
+          @click="clickPreviousButton"
+          v-show="currentDayIndex > 0"
+        >
+          上一页
+        </button>
+      </div>
+      <div class="single-button-container">
+        <button
+          class="day-button left"
+          @click="setDay(0)"
+          :class="{ selected: currentDayIndex == 0 }"
+        >
+          周一
+        </button>
+      </div>
+      <div class="single-button-container">
+        <button
+          class="day-button left"
+          @click="setDay(1)"
+          :class="{ selected: currentDayIndex == 1 }"
+        >
+          周二
+        </button>
+      </div>
+      <div class="single-button-container">
+        <button
+          class="day-button left"
+          @click="setDay(2)"
+          :class="{ selected: currentDayIndex == 2 }"
+        >
+          周三
+        </button>
+      </div>
+      <div class="single-button-container">
+        <button
+          class="day-button left"
+          @click="setDay(3)"
+          :class="{ selected: currentDayIndex == 3 }"
+        >
+          周四
+        </button>
+      </div>
+      <div class="single-button-container">
+        <button
+          class="day-button left"
+          @click="setDay(4)"
+          :class="{ selected: currentDayIndex == 4 }"
+        >
+          周五
+        </button>
+      </div>
+      <div class="single-button-container">
+        <button class="previous-next-button right" @click="clickNextButton">
+          <el-icon class="el-icon--right"><ArrowRight /></el-icon>
+        </button>
+      </div>
+    </div> -->
+
+
+  </div>
 </template>
 
-<script src="./PlanPage.js"></script> <!-- Link to the JS file -->
+<script lang="ts" src="./PlanPage.js">
+import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
+
+
+
+
+const drawer = ref(false);
+</script>
+<style scoped>
+.el-button {
+  padding: 0;
+}
+.el-teble{
+    text-align: center;
+}
+.el-table_body {
+  background-color: #000; /* 你想要的背景色 */
+}
+</style>

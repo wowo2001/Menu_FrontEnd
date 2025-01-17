@@ -55,12 +55,12 @@ h1 {
 }
 
     .menu-id-button.selected {
-        background-color: #007bff;
+        background-color: #ab2b3a;
         color: white;
     }
 
     .menu-id-button:hover {
-        background-color: #007bff;
+        background-color: #ab2b3a;
         color: white;
     }
 

@@ -42,7 +42,7 @@ export default {
         this.fetchAllPurchaseList();
         this.fetchMenuData();    // Fetch the menu data when the component is mounted
         this.fetchTodayChoice(this.menuId);
-       
+        
     },
 
     methods: {
@@ -72,8 +72,6 @@ export default {
             try {
                 const response = await axios.get(`${apiHost}/menu/getIngredient?name=${menuName}`);
                 if (dishType === 'main') {
-
-                    console.log(this.mainDishIngredients)
                     this.mainDishIngredients = response.data || [];
                 } else if (dishType === 'side1') {
                     this.sideDish1Ingredients = response.data || [];
