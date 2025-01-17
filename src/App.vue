@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="mainpage">
+  <div class="mainpage" style="touch-action: manipulation;">
     <el-container>
       <el-header >
         <el-affix target=".mainpage" position="top" :offset="0">
