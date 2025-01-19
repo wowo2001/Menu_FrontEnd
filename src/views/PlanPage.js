@@ -7,6 +7,7 @@ class Dish {
         this.type = type;
         this.name = name;
         this.ingredient = [];
+        this.typeInChinese = this.typeInChinese(this.type);
     }
 
     async updateIngredient() {
@@ -23,6 +24,62 @@ class Dish {
             console.error('Error fetching ingredient data:', error);
         }
     }
+    typeInChinese(type) {
+        const typeMap = {
+            'Main': '主菜',
+            'Side': '配菜',
+            'Soup': '汤',
+            'Lunch': '午餐'
+        };
+
+        return typeMap[type]
+    }
+}
+class Day {
+    constructor(periodOfDays) {
+        this.indexOfDay = 0;
+        this.periodOfDays = periodOfDays;
+        this.dayListEnglish = this.dayListInEnglish(periodOfDays);
+        this.dayListChinese = this.dayListInChinese(periodOfDays);
+    }
+    get dayEnglish() {
+        return this.dayInEnglish(this.indexOfDay);
+    }
+    get dayChinese() {
+        return this.dayInChinese(this.indexOfDay);
+    }
+    dayInChinese(index) {
+        const dayMap = {
+            '0': '周一',
+            '1': '周二',
+            '2': '周三',
+            '3': '周四',
+            '4': '周五',
+            '5': '周六',
+            '6': '周日'
+        };
+        return dayMap[index];
+    }
+    dayInEnglish(index) {
+        const dayMap = {
+            '0': 'Monday',
+            '1': 'Tuesday',
+            '2': 'Wednesday',
+            '3': 'Thursday',
+            '4': 'Friday',
+            '5': 'Saturday',
+            '6': 'Sunday'
+        };
+        return dayMap[index];
+    }
+    dayListInEnglish(length) {
+        const dayListEnglish = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        return dayListEnglish.slice(0, length)
+    }
+    dayListInChinese(length) {
+        const dayListChinese = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        return dayListChinese.slice(0, length)
+    }
 }
 
 
@@ -33,11 +90,10 @@ export default {
         return {
             MenuIdList: [],
             menuId: null,
-            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], // Days of the week
-            currentDayIndex: 0,
+            day: new Day(5), // Days of the week
             menuData: { 'Main': [], 'Side': [], 'Soup': [], 'Lunch': [] },
             selectedDishList: [],
-            previousSelectedDishList: []
+            previousSelectedDishList: [],
         };
     },
     async mounted() {
@@ -49,6 +105,7 @@ export default {
     },
 
     methods: {
+        
         addMoreDish(type)
         {
             this.selectedDishList.push(new Dish(type, ''));
@@ -146,7 +203,7 @@ export default {
                 //this.clearCache();
                     // Assuming the response contains the allIngredientList
                 for (const item of todayChoiceList) {
-                    if (this.dayOfWeek[this.currentDayIndex] === item.day) {
+                    if (this.day.dayEnglish === item.day) {
 
                         for (const dish of item.dish) {
                             let type = null; // Initialize type to null
@@ -197,19 +254,25 @@ export default {
             try {
             const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`);
                 // Assuming the response contains the allIngredientList
-                response.data.forEach((menuId, index) => {
+                for (let index = 0; index < response.data.length; index++) {
+                    const menuId = response.data[index];
                     if (!this.MenuIdList.includes(menuId)) {
                         this.MenuIdList.push(menuId);
                     }
-                });
+                    if (this.MenuIdList.length >= 4) {
+                        break;  // Exit the loop once we have 4 items in the list
+                    }
+                }
+                
         } catch(error) {
             console.error("Error fetching ingredient list:", error);
-        }
+            }
+            
         },
         async setMenuId(menuId) {
             this.menuId = menuId;
             this.fetchTodayChoice(this.menuId);
-            this.currentDayIndex = 0;
+            this.day.indexOfDay = 0;
         },
         async formattedDate() {
             const today = new Date();
@@ -244,7 +307,7 @@ export default {
                 Id: this.menuId,  // Using the formatted menu ID (e.g., "12/2/2024")
                 MyChoice: [
                     {
-                        Day: this.dayOfWeek[this.currentDayIndex],  // Get the current day of the week
+                        Day: this.day.dayEnglish,  // Get the current day of the week
                         Dish: dishList.filter(Boolean) // Remove any null/undefined values from the list
                     }
                 ]
@@ -315,10 +378,8 @@ export default {
             return thisWeeksMenu.has(dishName);
         },
         clickNextButton() {
-            if (this.currentDayIndex < 4) {
-                this.fetchTodayChoice(this.menuId);
-                this.currentDayIndex++;
-                this.clearCache();
+            if (this.day.indexOfDay < this.day.periodOfDays - 1) {
+                this.setDay(this.day.indexOfDay+1);
             }
             else {
                 this.fetchIngredientList(this.menuId);
@@ -327,13 +388,14 @@ export default {
            
         },
         clickPreviousButton() {
-            this.fetchTodayChoice(this.menuId);
-            this.currentDayIndex--;
-            this.clearCache();
+            this.setDay(this.day.indexOfDay - 1);
         },
-        setDay(day) {
+        setDay(index) {
+            this.day.indexOfDay = index;
+            this.day.dayInEnglish();
+            this.day.dayInChinese();
+            console.log(this.day);
             this.fetchTodayChoice(this.menuId);
-            this.currentDayIndex = day;
             this.clearCache();
         },
         clearCache() {
