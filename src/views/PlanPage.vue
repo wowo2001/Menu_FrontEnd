@@ -17,7 +17,6 @@
                 <el-button :disabled="day.indexOfDay === 0"
                            color="#9f6955"
                            type="primary"
-                           plain=true
                            @click="clickPreviousButton">
                     <el-icon><ArrowLeft /></el-icon>
                 </el-button>

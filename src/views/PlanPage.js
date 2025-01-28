@@ -42,6 +42,7 @@ class Day {
         this.dayListEnglish = this.dayListInEnglish(periodOfDays);
         this.dayListChinese = this.dayListInChinese(periodOfDays);
     }
+ 
     get dayEnglish() {
         return this.dayInEnglish(this.indexOfDay);
     }
@@ -274,6 +275,7 @@ export default {
             this.menuId = menuId;
             this.fetchTodayChoice(this.menuId);
             this.day.indexOfDay = 0;
+            this.indexOfDay = 0;
         },
         async formattedDate() {
             const today = new Date();
