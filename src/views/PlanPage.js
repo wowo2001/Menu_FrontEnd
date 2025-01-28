@@ -94,6 +94,7 @@ export default {
             menuData: { 'Main': [], 'Side': [], 'Soup': [], 'Lunch': [] },
             selectedDishList: [],
             previousSelectedDishList: [],
+            indexOfDay: null,
         };
     },
     async mounted() {
@@ -394,9 +395,9 @@ export default {
             this.day.indexOfDay = index;
             this.day.dayInEnglish();
             this.day.dayInChinese();
-            console.log(this.day);
             this.fetchTodayChoice(this.menuId);
             this.clearCache();
+            this.indexOfDay = this.day.indexOfDay;
         },
         clearCache() {
             this.selectedDishList = [];
