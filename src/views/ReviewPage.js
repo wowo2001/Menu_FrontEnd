@@ -8,7 +8,7 @@ export default {
             MenuIdList: null,
             menuId: null,
             allIngredientList: [], // Will store the list of ingredients
-            sortBy: '', // Column to sort by
+            sortBy: 'purchased', // Column to sort by
             sortOrder: 'asc', // Sorting order (ascending or descending)
             filterList: [],
             filterName: null,
@@ -52,6 +52,7 @@ export default {
             } catch (error) {
                 console.error("Error updating purchase status:", error);
             }
+            this.sortTable('purchased','asc');
         },
         delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -90,27 +91,28 @@ export default {
             this.$router.push({ path: '/review', query: { menuId: this.menuId } });
 
         },
-        sortTable(column) {
-            if (this.sortBy === column) {
+        sortTable(column, order) {
+
+            if (this.sortBy === column && order === undefined) {
                 // Toggle the sorting order
                 this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
             } else {
                 // Set the sorting column and default to ascending order
                 this.sortBy = column;
-                this.sortOrder = 'asc';
+                this.sortOrder = order === undefined ? 'asc' : order;
             }
 
             // Sort the list based on the selected column
-            this.allIngredientList.sort((a, b) => {
+            this.sortedIngredientList.sort((a, b) => {
                 const valueA = a[column];
                 const valueB = b[column];
-
                 if (this.sortOrder === 'asc') {
                     return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0);
                 } else {
                     return valueA < valueB ? 1 : (valueA > valueB ? -1 : 0);
                 }
             });
+ 
         },
         async deletePurchaseList() {
             const payload = {

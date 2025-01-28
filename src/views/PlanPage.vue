@@ -6,26 +6,27 @@
   
             <el-button-group style="display: flex">
               <el-button
-                color="#ab2b3a"
+                :color="Id === menuId ? '#ffd633' : '#9f6955'"
                 v-for="(Id, index) in MenuIdList"
                 :key="index"
                 @click="setMenuId(Id)"
-                :class="['menu-id-button', { selected: menuId === Id }]"
                 >{{ Id }}</el-button
               >
             </el-button-group>
-            <el-button-group style="display: flex">
-              <el-button
-                        :disabled="day.indexOfDay === 0"
-                color="#9f6955"
-                type="primary"
-                @click="clickPreviousButton"
-                ><el-icon><ArrowLeft /></el-icon
-              ></el-button>
-              <el-button v-for="(day,index) in day.dayListChinese" color="#9f6955" type="primary" :class="{'highlight-button': index === day.indexOfDay}" @click="setDay(index)">{{day}} </el-button>
-              <el-button color="#9f6955" type="primary" @click="clickNextButton"
-                ><el-icon><ArrowRight /></el-icon
-              ></el-button>
+            <el-button-group style="display: flex; margin-top: 1rem; margin-bottom: 1rem;">
+                <el-button :disabled="day.indexOfDay === 0"
+                           color="#9f6955"
+                           type="primary"
+                           @click="clickPreviousButton">
+                    <el-icon><ArrowLeft /></el-icon>
+                </el-button>
+                <el-button :color="index === indexOfDay ? '#ffd633' : '#9f6955'"
+                           v-for="(day,index) in day.dayListChinese"
+                           :key="index"
+                           @click="setDay(index)">{{day}} </el-button>
+                <el-button color="#9f6955" type="primary" @click="clickNextButton">
+                    <el-icon><ArrowRight /></el-icon>
+                </el-button>
             </el-button-group>
     
         </div>

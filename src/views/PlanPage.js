@@ -42,6 +42,7 @@ class Day {
         this.dayListEnglish = this.dayListInEnglish(periodOfDays);
         this.dayListChinese = this.dayListInChinese(periodOfDays);
     }
+ 
     get dayEnglish() {
         return this.dayInEnglish(this.indexOfDay);
     }
@@ -94,11 +95,12 @@ export default {
             menuData: { 'Main': [], 'Side': [], 'Soup': [], 'Lunch': [] },
             selectedDishList: [],
             previousSelectedDishList: [],
+            indexOfDay: null,
         };
     },
     async mounted() {
-        this.formattedDate();
-        this.fetchAllPurchaseList();
+        await this.formattedDate();
+        await this.fetchAllPurchaseList();
         await this.fetchMenuData();
         await this.fetchTodayChoice(this.menuId);
         
@@ -273,6 +275,7 @@ export default {
             this.menuId = menuId;
             this.fetchTodayChoice(this.menuId);
             this.day.indexOfDay = 0;
+            this.indexOfDay = 0;
         },
         async formattedDate() {
             const today = new Date();
@@ -394,9 +397,9 @@ export default {
             this.day.indexOfDay = index;
             this.day.dayInEnglish();
             this.day.dayInChinese();
-            console.log(this.day);
             this.fetchTodayChoice(this.menuId);
             this.clearCache();
+            this.indexOfDay = this.day.indexOfDay;
         },
         clearCache() {
             this.selectedDishList = [];
