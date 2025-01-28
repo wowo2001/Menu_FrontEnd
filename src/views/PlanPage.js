@@ -99,8 +99,8 @@ export default {
         };
     },
     async mounted() {
-        this.formattedDate();
-        this.fetchAllPurchaseList();
+        await this.formattedDate();
+        await this.fetchAllPurchaseList();
         await this.fetchMenuData();
         await this.fetchTodayChoice(this.menuId);
         

@@ -10,24 +10,21 @@
 
     <!-- Dynamically generated rows for inputs -->
     <div v-for="(row, index) in rows" :key="index" class="row">
-      <div class="col-12 col-md-4">
-        <input type="text" v-model="row.name" class="form-control custom-input" placeholder="名称" />
-      </div>
-      <div class="col-12 col-md-4">
-        <input type="number" v-model="row.amount" class="form-control custom-input" placeholder="数量" />
-      </div>
-      <div class="col-12 col-md-4">
-        <input type="text" v-model="row.unit" class="form-control custom-input" placeholder="单位" />
-      </div>
-      <div class="col-12 col-md-4">
-        <button @click="removeRow(index)" class="btn red-button mt-3">X</button>
+
+        <el-input type="text" v-model="row.name"  placeholder="名称" />
+
+        <el-input type="number" v-model="row.amount"  placeholder="数量" />
+
+        <el-input type="text" v-model="row.unit"  placeholder="单位" />
+
+        <el-button @click="removeRow(index)" color="red" style="width: 1rem;">X</el-button>
+
     </div>
-    </div>
-    <button @click="addRow" class="btn blue-button mt-3">增加更多</button>
+    <el-button @click="addRow" color="blue">增加更多</el-button>
     <!-- Buttons -->
     <div class="container">
       
-      <button @click="submit" class="btn btn-primary mt-3 custom-margin">下一页</button>
+      <el-button @click="submit" color="green">下一页</el-button>
     </div>
   </div>
 </template>
