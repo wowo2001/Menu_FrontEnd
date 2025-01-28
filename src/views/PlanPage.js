@@ -8,7 +8,7 @@ class Dish {
         this.type = type;
         this.name = name;
         this.ingredient = [];
-        this.typeInChinese = this.typeInChinese(this.type);
+        this.typeInChinese = this.typeInChinese(type);
     }
 
     async updateIngredient() {
@@ -97,6 +97,8 @@ export default {
             selectedDishList: [],
             previousSelectedDishList: [],
             indexOfDay: null,
+            dialogVisible: false,
+            dialogType: null
         };
     },
     async mounted() {
@@ -108,6 +110,56 @@ export default {
     },
 
     methods: {
+        hanldleButtonColor(menu) {
+            var inSelectedDishList = false;
+            this.selectedDishList.forEach((dish, index) => {
+                if (dish.name === menu) {
+                    inSelectedDishList = true;
+                }
+   
+            });
+            if (inSelectedDishList) {
+                return "blue";
+            }
+            else {
+                return "#e6f3ff";
+            }
+        },
+       
+        async stagingSelectedDishUpdate(menu) {
+            var inSelectedDishList = false;
+            this.selectedDishList.forEach((dish, index) => {
+                if (dish.name === menu) {
+                    inSelectedDishList = true;
+                }
+
+            });
+            if (!inSelectedDishList) {
+                var dish = new Dish(this.dialogType, menu);
+                await dish.updateIngredient();
+                this.selectedDishList.push(dish);
+ 
+            }
+            else {
+                this.selectedDishList = this.selectedDishList.filter(dish => dish.name !== menu);
+            }
+            this.sortDish();
+            this.updateShopList(menu);
+            this.hanldleButtonColor(menu);
+            
+                
+
+        },
+
+        openDialog(Menu) {
+            this.dialogVisible = true;
+            this.dialogType = Menu;
+        },
+
+        // Close the dialog
+        closeDialog() {
+            this.dialogVisible = false;
+        },
         
         addMoreDish(type)
         {
@@ -137,26 +189,26 @@ export default {
                     lunch++;
                 }
             });
-            if (main < targetMain) {
-                for (let i = 0; i < targetMain - main; i++) {
-                    this.selectedDishList.push(new Dish('Main', ''));
-                }
-            }
-            if (side < targetside) {
-                for (let i = 0; i < targetside - side; i++) {
-                    this.selectedDishList.push(new Dish('Side', ''));
-                }
-            }
-            if (soup < targetsoup) {
-                for (let i = 0; i < targetsoup - soup; i++) {
-                    this.selectedDishList.push(new Dish('Soup', ''));
-                }
-            }
-            if (lunch < targetlunch) {
-                for (let i = 0; i < targetlunch - lunch; i++) {
-                    this.selectedDishList.push(new Dish('Lunch', ''));
-                }
-            }
+            //if (main < targetMain) {
+            //    for (let i = 0; i < targetMain - main; i++) {
+            //        this.selectedDishList.push(new Dish('Main', ''));
+            //    }
+            //}
+            //if (side < targetside) {
+            //    for (let i = 0; i < targetside - side; i++) {
+            //        this.selectedDishList.push(new Dish('Side', ''));
+            //    }
+            //}
+            //if (soup < targetsoup) {
+            //    for (let i = 0; i < targetsoup - soup; i++) {
+            //        this.selectedDishList.push(new Dish('Soup', ''));
+            //    }
+            //}
+            //if (lunch < targetlunch) {
+            //    for (let i = 0; i < targetlunch - lunch; i++) {
+            //        this.selectedDishList.push(new Dish('Lunch', ''));
+            //    }
+            //}
 
             const dishTypeOrder = {
                 'Main': 0,
@@ -238,7 +290,7 @@ export default {
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
             }
-            this.sortDish();
+            //this.sortDish();
             
             this.cacheDropdownListOptions();
         },
@@ -316,6 +368,7 @@ export default {
                     }
                 ]
             };
+            console.log(requestBody);
  
 
             if (notExistingPurchaseList == true && !existingInThisWeeksMenu) {
