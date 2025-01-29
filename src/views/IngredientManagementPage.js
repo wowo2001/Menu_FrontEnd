@@ -1,7 +1,8 @@
 ﻿import './IngredientManagementPage.css';
 import axios from 'axios';
+import config from '.././config';
 
-const apiHost = "http://3.107.99.30:3000";
+const apiHost = config.menu_backend_url;
 export default {
     name: "IngredientManagementPage",
     data() {

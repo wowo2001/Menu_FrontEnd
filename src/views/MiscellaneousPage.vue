@@ -11,7 +11,7 @@
     <!-- Dynamically generated rows for inputs -->
     <div v-for="(row, index) in rows" :key="index" class="row">
 
-        <el-input type="text" v-model="row.name"  placeholder="名称" />
+        <el-input type="text" v-model="row.name"  placeholder="名称" @change="validateUnit(row.name)"/>
 
         <el-input type="number" v-model="row.amount"  placeholder="数量" />
 

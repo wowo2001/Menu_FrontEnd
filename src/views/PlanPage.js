@@ -1,5 +1,6 @@
 ﻿import './PlanPage.css';
 import axios from 'axios';
+import config from '.././config';
 import { useRouter } from 'vue-router'; // To navigate programmatically
 
 class Dish {
@@ -84,7 +85,7 @@ class Day {
 }
 
 
-const apiHost = "http://3.107.99.30:3000";
+const apiHost = config.menu_backend_url;
 export default {
     name: "PlanPage",
     data() {
@@ -385,7 +386,7 @@ export default {
                 this.setDay(this.day.indexOfDay+1);
             }
             else {
-                this.fetchIngredientList(this.menuId);
+                //this.fetchIngredientList(this.menuId);
                 this.$router.push({ path:'/miscellaneous', query: { menuId: this.menuId } });
             }
            

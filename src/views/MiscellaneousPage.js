@@ -1,7 +1,8 @@
 ﻿import './MiscellaneousPage.css';
 import axios from 'axios';
+import config from '.././config';
 
-const apiHost = "http://3.107.99.30:3000";
+const apiHost = config.menu_backend_url;
 export default {
     name: "MiscellaneousPage",
     data() {
@@ -13,13 +14,14 @@ export default {
             isLoading: false,
         };
     },
-    mounted() {
-        this.getMenuId();
+    async mounted() {
+        await this.getMenuId();
+        this.rows = await this.getUpdatePurchaseList(this.menuId);
     },
     methods: {
         // Method to add a new row
         addRow() {
-            this.rows.push({ name: '', amount: 0.0, unit: '', purchased: false, location:'' });
+            this.rows.push({ name: '', amount: 0.0, unit: '', purchased: false, location: '', source: 'extra' });
         },
         removeRow(index) {
             this.rows.splice(index, 1);
@@ -68,6 +70,40 @@ export default {
             }
 
         },
+        async getUpdatePurchaseList(menuId) {
+            try {
+                const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`);
+                console.log(response.data.allIngredientList);
+                var extra = response.data.allIngredientList.filter(ingredient => ingredient.source === 'extra');
+                console.log(extra);
+                return extra;
+
+            } catch (error) {
+                console.error("Error fetching ingredient list:", error);
+            }
+
+        },
+        async fetchIngredientUnit(ingredientName) {
+            var validateIndex = null;
+            this.rows.forEach((ingredient, index) => {
+                if (ingredient.name == ingredientName) {
+                    validateIndex = index;
+                }
+            });
+            console.log(validateIndex);
+            if (validateIndex != null) {
+                try {
+                    const response = await axios.get(`${apiHost}/menu/GetIngredientUnit?ingredientName=${this.rows[validateIndex].name}`);
+                    this.rows[validateIndex].unit = response.data;
+                } catch (error) {
+                    console.error("Error fetching ingredient list:", error);
+                }
+            }
+        },
+        async validateUnit(ingredientName) {
+            this.fetchIngredientUnit(ingredientName);
+        },
+
 
         async postUpdatePurchaseList(request) {
             console.log(request);
