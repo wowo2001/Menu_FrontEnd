@@ -180,6 +180,8 @@ export default {
         },
 
         openDialog(Menu) {
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
             this.dialogVisible = true;
             const dishTypeOrder = {
                 'Main': 0,
@@ -193,6 +195,8 @@ export default {
 
         // Close the dialog
         closeDialog() {
+            document.body.style.position = '';
+            document.body.style.width = '';
             this.dialogVisible = false;
         },
         
