@@ -4,7 +4,7 @@ import config from '.././config';
 import { useRouter } from 'vue-router'; // To navigate programmatically
 import 'vue3-carousel/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
-
+import { ref } from 'vue'
 
 
 
@@ -110,7 +110,8 @@ export default {
             carouselConfig : {
                 itemsToShow: 2.5,
                 wrapAround: false,
-                itemsToShow: 1
+                itemsToShow: 1,
+                breakpointMode: 'carousel'
             },
             dialogTypeList: ['Main', 'Side', 'Soup', 'Lunch'],
         };
@@ -180,6 +181,13 @@ export default {
 
         openDialog(Menu) {
             this.dialogVisible = true;
+            const dishTypeOrder = {
+                'Main': 0,
+                'Side': 1,
+                'Soup': 2,
+                'Lunch': 3
+            };
+            this.$refs.myCarousel.slideTo(dishTypeOrder[Menu]);
             //this.dialogType = Menu;
         },
 
@@ -356,6 +364,7 @@ export default {
             this.fetchTodayChoice(this.menuId);
             this.day.indexOfDay = 0;
             this.indexOfDay = 0;
+            this.weeklyDishList = await this.weeklyDish();
         },
         async formattedDate() {
             const today = new Date();

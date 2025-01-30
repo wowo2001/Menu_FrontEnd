@@ -13,7 +13,7 @@
                 <div>
                     <el-button v-for="(dish, index) in selectedDishList"
                                :color="hanldleButtonColor(dish.name)"
-                               :ref="`button-${index}`" style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
+                                style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
                         <span class="button-text" @click="stagingSelectedDishUpdate(dialogType,dish.name)">{{ dish.name }}</span>
                     </el-button>
                 </div>
