@@ -2,6 +2,10 @@
 import axios from 'axios';
 import config from '.././config';
 import { useRouter } from 'vue-router'; // To navigate programmatically
+import 'vue3-carousel/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+
+
 
 class Dish {
     constructor(type,name) {
@@ -98,7 +102,13 @@ export default {
             previousSelectedDishList: [],
             indexOfDay: null,
             dialogVisible: false,
-            dialogType: null
+            dialogType: null,
+            carouselConfig : {
+                itemsToShow: 2.5,
+                wrapAround: false,
+                itemsToShow: 1
+            },
+            dialogTypeList :['Main','Side','Soup','Lunch']
         };
     },
     async mounted() {
@@ -108,6 +118,8 @@ export default {
         await this.fetchTodayChoice(this.menuId);
         
     },
+    components:
+    { Carousel, Slide },
 
     methods: {
         hanldleButtonColor(menu) {
@@ -153,7 +165,7 @@ export default {
 
         openDialog(Menu) {
             this.dialogVisible = true;
-            this.dialogType = Menu;
+            //this.dialogType = Menu;
         },
 
         // Close the dialog
