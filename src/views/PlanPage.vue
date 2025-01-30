@@ -56,8 +56,8 @@
                                    @click="clickPreviousButton">
                             <el-icon><ArrowLeft /></el-icon>
                         </el-button>
-                        <el-button :color="index === indexOfDay ? '#ffd633' : '#9f6955'"
-                                   v-for="(day,index) in day.dayListChinese"
+                        <el-button  v-for="(day,index) in day.dayListChinese"
+                                   :color="index === indexOfDay ? '#ffd633' : '#9f6955'"
                                    :key="index"
                                    @click="setDay(index)">{{day}} </el-button>
                         <el-button color="#9f6955" type="primary" @click="clickNextButton">

@@ -104,7 +104,7 @@ export default {
             selectedDishList: [],
             previousSelectedDishList: [],
             weeklyDishList: [],
-            indexOfDay: null,
+            indexOfDay: 0,
             dialogVisible: false,
             dialogType: null,
             carouselConfig : {
