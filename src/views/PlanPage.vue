@@ -24,8 +24,8 @@
                             <div class="button-container">
                                 <el-button v-for="(dish, index) in menuData[dialogType]"
                                            :color="hanldleButtonColor(dish)"
-                                           style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
-                                    <span class="button-text" @click="stagingSelectedDishUpdate(dialogType,dish)">{{ dish }}</span>
+                                           style="width: fit-content; padding: 1rem; margin-bottom: 1rem" @click="stagingSelectedDishUpdate(dialogType,dish)">
+                                   {{ dish }}
                                 </el-button>
                             </div>
 
