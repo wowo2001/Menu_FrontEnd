@@ -3,7 +3,6 @@
 
     <!-- Modal Dialog -->
     <el-dialog v-model="dialogVisible"
-               title="可用菜单"
                width="90%"
                @close="closeDialog">
         <div>
@@ -101,11 +100,7 @@
                                 <el-table-column prop="amount" label="数量" />
                                 <el-table-column prop="unit" label="单位" />
                             </el-table>
-                            <el-button color="#f1e6d8"
-                                       @click="addMoreDish(selectedDish.type)"
-                                       class="graphic-button">
-                                <el-icon size="1rem"><Plus /></el-icon>
-                            </el-button>
+                            
                         </div>
 
                     </div>
