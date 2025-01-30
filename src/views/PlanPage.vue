@@ -4,27 +4,39 @@
     <!-- Modal Dialog -->
     <el-dialog v-model="dialogVisible"
                title="可用菜单"
-               width="80%"
+               width="90%"
                @close="closeDialog">
         <div>
-            <p>请选择需要的菜:</p>
-            <div class="custom-slide">
-                <Carousel v-bind="carouselConfig">
-                    <Slide v-for="(dialogType, index) in dialogTypeList" :key="index">
-
-                        <div class="button-container">
-                            <el-button v-for="(menu, index) in menuData[dialogType]"
-                                       :color="hanldleButtonColor(menu)"
-                                       :ref="`button-${index}`" style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
-                                <span class="button-text" @click="stagingSelectedDishUpdate(menu)">{{ menu }}</span>
-                            </el-button>
-                        </div>
-
-                    </Slide>
-                </Carousel>
-            </div>
+            <p>今日选择:<span class="dot blue"></span>本周选择:<span class="dot red"></span></p>
         </div>
-     
+            <div>
+                <div>
+                    <el-button v-for="(dish, index) in selectedDishList"
+                               :color="hanldleButtonColor(dish.name)"
+                               :ref="`button-${index}`" style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
+                        <span class="button-text" @click="stagingSelectedDishUpdate(dialogType,dish.name)">{{ dish.name }}</span>
+                    </el-button>
+                </div>
+                <p>请选择需要的菜:</p>
+                <div class="custom-slide">
+                    <Carousel :options="carouselConfig" ref="myCarousel">
+                        <Slide v-for="(dialogType, index) in dialogTypeList" :key="index">
+                            <div class="button-container">
+                                <el-button v-for="(dish, index) in menuData[dialogType]"
+                                           :color="hanldleButtonColor(dish)"
+                                           style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
+                                    <span class="button-text" @click="stagingSelectedDishUpdate(dialogType,dish)">{{ dish }}</span>
+                                </el-button>
+                            </div>
+
+                        </Slide>
+                        <template #addons>
+                            <Pagination />
+                        </template>
+                    </Carousel>
+                </div>
+            </div>
+
 
     </el-dialog>
     <div>
@@ -124,14 +136,26 @@
 
     }
     .button-container {
-  display: flex;            /* Enable flexbox layout */
-  flex-wrap: wrap;          /* Allow buttons to wrap to the next line if needed */
-  width: 100%;              /* Ensure the container takes full width of the dialog */
-  align-items: flex-start;  /* Align buttons to the top of the container */
-  padding: 0rem;            /* Optional: remove padding if unnecessary */
-  height: 100%;             /* Optional: ensure the container takes full height */
-  overflow-y: auto;         /* Enable vertical scrolling if content exceeds the height */
+  display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+  justify-content: flex-start; /* Align buttons to the left (or start) */
+  align-items: flex-start; /* Align buttons to the top */
+  width: 100%; /* Full width of the parent container */
+  height: 20rem; /* Fixed height for the container */
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+  padding: 1rem; /* Optional: add some padding for spacing */
 }
-    
+    .dot {
+        height: 1rem;
+        width: 1rem;
+        border-radius: 100%;
+        display: inline-block;
+    }
+    .blue {
+        background-color: #4d79ff;
+    }
+    .red {
+        background-color: #ffe6e6;
+    }
 
 </style>
