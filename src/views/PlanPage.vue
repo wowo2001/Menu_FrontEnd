@@ -16,7 +16,7 @@
         </div>
         <div>
 
-            <div class="button-container" style="max-height:8rem">
+            <div class="button-container" style="max-height:4rem">
                 <el-button v-for="(dish, index) in selectedDishList"
                            :color="hanldleButtonColor(dish.name)"
                            style="width: fit-content; padding: 0.5rem; margin-bottom: 0.5rem" @click="stagingSelectedDishUpdate(dialogType,dish.name)">
