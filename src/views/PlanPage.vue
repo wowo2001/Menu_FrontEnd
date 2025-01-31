@@ -16,11 +16,11 @@
         </div>
         <div>
 
-            <div class="button-container" style="max-height: 8rem">
+            <div class="button-container" style="max-height:8rem">
                 <el-button v-for="(dish, index) in selectedDishList"
                            :color="hanldleButtonColor(dish.name)"
-                           style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
-                    <span class="button-text" @click="stagingSelectedDishUpdate(dialogType,dish.name)">{{ dish.name }}</span>
+                           style="width: fit-content; padding: 0.5rem; margin-bottom: 0.5rem" @click="stagingSelectedDishUpdate(dialogType,dish.name)">
+                    {{ dish.name }}
                 </el-button>
             </div>
 
@@ -28,10 +28,10 @@
             <div class="custom-slide">
                 <Carousel :options="carouselConfig" ref="myCarousel">
                     <Slide v-for="(dialogType, index) in dialogTypeList" :key="index" sytle="display: flex;">
-                        <div class="button-container">
+                        <div class="button-container"  style="height:20rem">
                             <el-button v-for="(dish, index) in menuData[dialogType]"
                                        :color="hanldleButtonColor(dish)"
-                                       style="width: fit-content; padding: 1rem; margin-bottom: 1rem" @click="stagingSelectedDishUpdate(dialogType,dish)">
+                                       style="width: fit-content; padding: 0.5rem; margin-bottom: 0.5rem" @click="stagingSelectedDishUpdate(dialogType,dish)">
                                 {{ dish }}
                             </el-button>
                         </div>
@@ -143,7 +143,6 @@
         justify-content: flex-start; /* Align buttons to the left (or start) */
         align-items: flex-start; /* Align buttons to the top */
         width: 100%; /* Full width of the parent container */
-        height: 20rem; /* Fixed height for the container */
         overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
         padding: 1rem; /* Optional: add some padding for spacing */
     }
