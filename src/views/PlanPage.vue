@@ -4,7 +4,7 @@
     <!-- Modal Dialog -->
     <el-dialog v-model="dialogVisible"
                width="90%"
-               @close="closeDialog">
+               @close="closeDialog" style="position: fixed; top: 5%; left: 5%; margin:0%">
         <el-button-group style="display: flex; margin-top: 1rem; margin-bottom: 1rem;">
             <el-button v-for="(day,index) in day.dayListChinese"
                        :color="index === indexOfDay ? '#ffd633' : '#9f6955'"
@@ -16,7 +16,7 @@
         </div>
         <div>
 
-            <div>
+            <div class="button-container" style="max-height: 8rem">
                 <el-button v-for="(dish, index) in selectedDishList"
                            :color="hanldleButtonColor(dish.name)"
                            style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
