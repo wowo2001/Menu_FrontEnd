@@ -5,36 +5,44 @@
     <el-dialog v-model="dialogVisible"
                width="90%"
                @close="closeDialog">
+        <el-button-group style="display: flex; margin-top: 1rem; margin-bottom: 1rem;">
+            <el-button v-for="(day,index) in day.dayListChinese"
+                       :color="index === indexOfDay ? '#ffd633' : '#9f6955'"
+                       :key="index"
+                       @click="setDay(index)">{{day}} </el-button>
+        </el-button-group>
         <div>
             <p>今日选择:<span class="dot blue"></span>本周选择:<span class="dot red"></span></p>
         </div>
-            <div>
-                <div>
-                    <el-button v-for="(dish, index) in selectedDishList"
-                               :color="hanldleButtonColor(dish.name)"
-                                style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
-                        <span class="button-text" @click="stagingSelectedDishUpdate(dialogType,dish.name)">{{ dish.name }}</span>
-                    </el-button>
-                </div>
-                <p>请选择需要的菜:</p>
-                <div class="custom-slide">
-                    <Carousel :options="carouselConfig" ref="myCarousel">
-                        <Slide v-for="(dialogType, index) in dialogTypeList" :key="index">
-                            <div class="button-container">
-                                <el-button v-for="(dish, index) in menuData[dialogType]"
-                                           :color="hanldleButtonColor(dish)"
-                                           style="width: fit-content; padding: 1rem; margin-bottom: 1rem" @click="stagingSelectedDishUpdate(dialogType,dish)">
-                                   {{ dish }}
-                                </el-button>
-                            </div>
+        <div>
 
-                        </Slide>
-                        <template #addons>
-                            <Pagination />
-                        </template>
-                    </Carousel>
-                </div>
+            <div>
+                <el-button v-for="(dish, index) in selectedDishList"
+                           :color="hanldleButtonColor(dish.name)"
+                           style="width: fit-content; padding: 1rem; margin-bottom: 1rem">
+                    <span class="button-text" @click="stagingSelectedDishUpdate(dialogType,dish.name)">{{ dish.name }}</span>
+                </el-button>
             </div>
+
+            <p>请选择需要的菜:</p>
+            <div class="custom-slide">
+                <Carousel :options="carouselConfig" ref="myCarousel">
+                    <Slide v-for="(dialogType, index) in dialogTypeList" :key="index" sytle="display: flex;">
+                        <div class="button-container">
+                            <el-button v-for="(dish, index) in menuData[dialogType]"
+                                       :color="hanldleButtonColor(dish)"
+                                       style="width: fit-content; padding: 1rem; margin-bottom: 1rem" @click="stagingSelectedDishUpdate(dialogType,dish)">
+                                {{ dish }}
+                            </el-button>
+                        </div>
+
+                    </Slide>
+                    <template #addons>
+                        <Pagination />
+                    </template>
+                </Carousel>
+            </div>
+        </div>
 
 
     </el-dialog>
@@ -131,15 +139,14 @@
 
     }
     .button-container {
-  display: flex;
-  flex-wrap: wrap; /* Allow buttons to wrap to the next line */
-  justify-content: flex-start; /* Align buttons to the left (or start) */
-  align-items: flex-start; /* Align buttons to the top */
-  width: 100%; /* Full width of the parent container */
-  height: 20rem; /* Fixed height for the container */
-  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
-  padding: 1rem; /* Optional: add some padding for spacing */
-}
+        flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+        justify-content: flex-start; /* Align buttons to the left (or start) */
+        align-items: flex-start; /* Align buttons to the top */
+        width: 100%; /* Full width of the parent container */
+        max-height: 20rem; /* Fixed height for the container */
+        overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+        padding: 1rem; /* Optional: add some padding for spacing */
+    }
     .dot {
         height: 1rem;
         width: 1rem;
@@ -152,5 +159,11 @@
     .red {
         background-color: #ffe6e6;
     }
+    .carousel__slide, .carousel__slide--active, .carousel__slide--visible {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
 
 </style>

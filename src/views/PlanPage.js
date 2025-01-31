@@ -4,7 +4,7 @@ import config from '.././config';
 import { useRouter } from 'vue-router'; // To navigate programmatically
 import 'vue3-carousel/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 
 
@@ -95,6 +95,12 @@ class Day {
 const apiHost = config.menu_backend_url;
 export default {
     name: "PlanPage",
+    setup() {
+        const myCarousel = ref(null);
+        return {
+            myCarousel,
+        };
+    },
     data() {
         return {
             MenuIdList: [],
@@ -189,7 +195,7 @@ export default {
                 'Soup': 2,
                 'Lunch': 3
             };
-            this.$refs.myCarousel.slideTo(dishTypeOrder[Menu]);
+            this.myCarousel.slideTo(dishTypeOrder[Menu]);
             //this.dialogType = Menu;
         },
 
