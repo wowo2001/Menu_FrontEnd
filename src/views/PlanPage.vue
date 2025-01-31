@@ -143,7 +143,7 @@
         justify-content: flex-start; /* Align buttons to the left (or start) */
         align-items: flex-start; /* Align buttons to the top */
         width: 100%; /* Full width of the parent container */
-        max-height: 20rem; /* Fixed height for the container */
+        height: 20rem; /* Fixed height for the container */
         overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
         padding: 1rem; /* Optional: add some padding for spacing */
     }
