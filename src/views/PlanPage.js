@@ -498,6 +498,7 @@ export default {
             this.fetchTodayChoice(this.menuId);
             this.clearCache();
             this.indexOfDay = this.day.indexOfDay;
+            this.myCarousel.slideTo(0);
         },
         clearCache() {
             this.selectedDishList = [];
