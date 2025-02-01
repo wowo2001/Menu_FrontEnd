@@ -3,6 +3,9 @@ import axios from 'axios';
 import config from '.././config';
 
 const apiHost = config.menu_backend_url;
+const headers = {
+    'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+};
 export default {
     name: "MiscellaneousPage",
     data() {
@@ -61,7 +64,9 @@ export default {
         },
         async fetchIngredientList(menuId) {
             try {
-                const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`);
+                const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`, {
+                    headers: headers
+                });
                 return response.data;
                 
 
@@ -72,7 +77,9 @@ export default {
         },
         async getUpdatePurchaseList(menuId) {
             try {
-                const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`);
+                const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`, {
+                    headers: headers
+                });
                 console.log(response.data.allIngredientList);
                 var extra = response.data.allIngredientList.filter(ingredient => ingredient.source === 'extra');
                 console.log(extra);
@@ -93,7 +100,9 @@ export default {
             console.log(validateIndex);
             if (validateIndex != null) {
                 try {
-                    const response = await axios.get(`${apiHost}/menu/GetIngredientUnit?ingredientName=${this.rows[validateIndex].name}`);
+                    const response = await axios.get(`${apiHost}/menu/GetIngredientUnit?ingredientName=${this.rows[validateIndex].name}`, {
+                        headers: headers
+                    });
                     this.rows[validateIndex].unit = response.data;
                 } catch (error) {
                     console.error("Error fetching ingredient list:", error);
@@ -108,7 +117,9 @@ export default {
         async postUpdatePurchaseList(request) {
             console.log(request);
             try {
-                const response = await axios.post(`${apiHost}/ShopList/UpdatePurchaseList`, request);
+                const response = await axios.post(`${apiHost}/ShopList/UpdatePurchaseList`, request, {
+                    headers: headers
+                });
                 console.log(response.data);
                 return response.data;
             } catch (error) {

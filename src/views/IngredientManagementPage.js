@@ -3,6 +3,9 @@ import axios from 'axios';
 import config from '.././config';
 
 const apiHost = config.menu_backend_url;
+const headers = {
+    'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+};
 export default {
     name: "IngredientManagementPage",
     data() {
@@ -23,7 +26,9 @@ export default {
         async fetchNameLocationList() {
             try {
                 this.isLoading = true;
-                const response = await axios.get(`${apiHost}/Location/GetAllIngredientLocationList`);
+                const response = await axios.get(`${apiHost}/Location/GetAllIngredientLocationList`, {
+                    headers: headers
+                });
                 this.backend_data = response.data;
                 this.isLoading = false;
                 return response.data;
