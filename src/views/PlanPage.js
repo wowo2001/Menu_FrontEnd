@@ -2,13 +2,19 @@
 import axios from 'axios';
 import config from '.././config';
 import { useRouter } from 'vue-router'; // To navigate programmatically
+import 'vue3-carousel/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import { ref, onMounted } from 'vue'
+
+
+
 
 class Dish {
     constructor(type,name) {
         this.type = type;
         this.name = name;
         this.ingredient = [];
-        this.typeInChinese = this.typeInChinese(this.type);
+        this.typeInChinese = this.typeInChinese(type);
     }
 
     async updateIngredient() {
@@ -35,6 +41,7 @@ class Dish {
 
         return typeMap[type]
     }
+ 
 }
 class Day {
     constructor(periodOfDays) {
@@ -88,6 +95,12 @@ class Day {
 const apiHost = config.menu_backend_url;
 export default {
     name: "PlanPage",
+    setup() {
+        const myCarousel = ref(null);
+        return {
+            myCarousel,
+        };
+    },
     data() {
         return {
             MenuIdList: [],
@@ -96,7 +109,17 @@ export default {
             menuData: { 'Main': [], 'Side': [], 'Soup': [], 'Lunch': [] },
             selectedDishList: [],
             previousSelectedDishList: [],
-            indexOfDay: null,
+            weeklyDishList: [],
+            indexOfDay: 0,
+            dialogVisible: false,
+            dialogType: null,
+            carouselConfig : {
+                itemsToShow: 2.5,
+                wrapAround: false,
+                itemsToShow: 1,
+                breakpointMode: 'carousel'
+            },
+            dialogTypeList: ['Main', 'Side', 'Soup', 'Lunch'],
         };
     },
     async mounted() {
@@ -104,10 +127,84 @@ export default {
         await this.fetchAllPurchaseList();
         await this.fetchMenuData();
         await this.fetchTodayChoice(this.menuId);
-        
+        this.weeklyDishList = await this.weeklyDish();
     },
+    components:
+        { Carousel, Slide, Pagination, Navigation },
 
     methods: {
+        hanldleButtonColor(menu) {
+            var inSelectedDishList = false;
+            this.selectedDishList.forEach((dish, index) => {
+                if (dish.name === menu) {
+                    inSelectedDishList = true;
+                }
+   
+            });
+            var inWeeklySelectedDishList = false;
+            this.weeklyDishList.forEach((dish, index) => {
+                if (dish === menu) {
+                    inWeeklySelectedDishList = true;
+                }
+
+            });
+            if (inSelectedDishList) {
+                return "#4d79ff";
+            }
+            else if (inWeeklySelectedDishList)
+            {
+                return "#ffe6e6";
+            }
+            else {
+                return "#e6f3ff";
+            }
+        },
+       
+        async stagingSelectedDishUpdate(dishType, selectedDish) {
+            
+            var inSelectedDishList = false;
+            this.selectedDishList.forEach((dish, index) => {
+                if (dish.name === selectedDish) {
+                    inSelectedDishList = true;
+                }
+
+            });
+            if (!inSelectedDishList) {
+                var dish = new Dish(dishType, selectedDish);
+                await dish.updateIngredient();
+                this.selectedDishList.push(dish);
+            }
+            else {
+                this.selectedDishList = this.selectedDishList.filter(dish => dish.name !== selectedDish);
+            }
+            this.sortDish();
+            this.updateShopList(selectedDish);
+            this.hanldleButtonColor(selectedDish);
+            
+                
+
+        },
+
+        openDialog(Menu) {
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            this.dialogVisible = true;
+            const dishTypeOrder = {
+                'Main': 0,
+                'Side': 1,
+                'Soup': 2,
+                'Lunch': 3
+            };
+            this.myCarousel.slideTo(dishTypeOrder[Menu]);
+            //this.dialogType = Menu;
+        },
+
+        // Close the dialog
+        closeDialog() {
+            document.body.style.position = '';
+            document.body.style.width = '';
+            this.dialogVisible = false;
+        },
         
         addMoreDish(type)
         {
@@ -137,26 +234,26 @@ export default {
                     lunch++;
                 }
             });
-            if (main < targetMain) {
-                for (let i = 0; i < targetMain - main; i++) {
-                    this.selectedDishList.push(new Dish('Main', ''));
-                }
-            }
-            if (side < targetside) {
-                for (let i = 0; i < targetside - side; i++) {
-                    this.selectedDishList.push(new Dish('Side', ''));
-                }
-            }
-            if (soup < targetsoup) {
-                for (let i = 0; i < targetsoup - soup; i++) {
-                    this.selectedDishList.push(new Dish('Soup', ''));
-                }
-            }
-            if (lunch < targetlunch) {
-                for (let i = 0; i < targetlunch - lunch; i++) {
-                    this.selectedDishList.push(new Dish('Lunch', ''));
-                }
-            }
+            //if (main < targetMain) {
+            //    for (let i = 0; i < targetMain - main; i++) {
+            //        this.selectedDishList.push(new Dish('Main', ''));
+            //    }
+            //}
+            //if (side < targetside) {
+            //    for (let i = 0; i < targetside - side; i++) {
+            //        this.selectedDishList.push(new Dish('Side', ''));
+            //    }
+            //}
+            //if (soup < targetsoup) {
+            //    for (let i = 0; i < targetsoup - soup; i++) {
+            //        this.selectedDishList.push(new Dish('Soup', ''));
+            //    }
+            //}
+            //if (lunch < targetlunch) {
+            //    for (let i = 0; i < targetlunch - lunch; i++) {
+            //        this.selectedDishList.push(new Dish('Lunch', ''));
+            //    }
+            //}
 
             const dishTypeOrder = {
                 'Main': 0,
@@ -238,7 +335,7 @@ export default {
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
             }
-            this.sortDish();
+            //this.sortDish();
             
             this.cacheDropdownListOptions();
         },
@@ -277,6 +374,7 @@ export default {
             this.fetchTodayChoice(this.menuId);
             this.day.indexOfDay = 0;
             this.indexOfDay = 0;
+            this.weeklyDishList = await this.weeklyDish();
         },
         async formattedDate() {
             const today = new Date();
@@ -289,8 +387,8 @@ export default {
             return new Promise(resolve => setTimeout(resolve, ms));
         },
         async updateShopList(dishName) {
-            var existingInThisWeeksMenu = await this.isDishExistingInThisWeeksMenu(dishName);
-
+            //var existingInThisWeeksMenu = await this.isDishExistingInThisWeeksMenu(dishName);
+            
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList`, {
                     params: {
@@ -316,10 +414,11 @@ export default {
                     }
                 ]
             };
+            console.log(requestBody);
  
 
-            if (notExistingPurchaseList == true && !existingInThisWeeksMenu) {
-                axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody)
+            if (notExistingPurchaseList == true) {
+                await axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody)
                     .then(response => {
                         console.log("Successfully updated the shop list:", response.data);
                     })
@@ -333,9 +432,6 @@ export default {
                 var userResponse = true;
                 if (!notExistingPurchaseList) {
                     userResponse = confirm("已经生成购物清单，更改菜单可能影响购物清单，是否更改？") && userResponse;
-                }
-                if (existingInThisWeeksMenu && userResponse) {
-                    userResponse = confirm("本周菜单已有此菜，是否继续选择？") && userResponse;
                 }
                 if (userResponse) {
                     axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody)
@@ -353,6 +449,7 @@ export default {
                     await this.fetchTodayChoice(this.menuId);
                 }
             }
+            this.weeklyDishList = await this.weeklyDish();
         },
         async handleUpdateDropList(dishListIndex, selectedName) {
             this.selectedDishList[dishListIndex].name = selectedName;
@@ -366,7 +463,7 @@ export default {
 
         },
 
-        async isDishExistingInThisWeeksMenu(dishName) {
+        async weeklyDish() {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`);
                 const todayChoiceList = response.data.myChoice;
@@ -379,7 +476,7 @@ export default {
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
             }
-            return thisWeeksMenu.has(dishName);
+            return thisWeeksMenu;
         },
         clickNextButton() {
             if (this.day.indexOfDay < this.day.periodOfDays - 1) {
@@ -401,6 +498,7 @@ export default {
             this.fetchTodayChoice(this.menuId);
             this.clearCache();
             this.indexOfDay = this.day.indexOfDay;
+            this.myCarousel.slideTo(0);
         },
         clearCache() {
             this.selectedDishList = [];
