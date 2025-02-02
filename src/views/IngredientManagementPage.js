@@ -3,9 +3,6 @@ import axios from 'axios';
 import config from '.././config';
 
 const apiHost = config.menu_backend_url;
-const headers = {
-    'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
-};
 export default {
     name: "IngredientManagementPage",
     data() {
@@ -15,6 +12,9 @@ export default {
             ],
             backend_data: null,
             isLoading: true,
+            headers : {
+                'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+            },
             
         };
     },
@@ -27,7 +27,7 @@ export default {
             try {
                 this.isLoading = true;
                 const response = await axios.get(`${apiHost}/Location/GetAllIngredientLocationList`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 this.backend_data = response.data;
                 this.isLoading = false;
@@ -60,7 +60,9 @@ export default {
             });
             console.log(difference);
             try {
-                const response = await axios.post(`${apiHost}/Location/EditLocation`, difference);
+                const response = await axios.post(`${apiHost}/Location/EditLocation`, difference, {
+                    headers: this.headers
+                });
                 if (response.status === 200) {
                     this.backend_data = this.rows;
                     alert("原料已更新");

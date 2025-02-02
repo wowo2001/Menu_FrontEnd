@@ -3,9 +3,6 @@ import axios from 'axios';
 import config from '.././config';
 
 const apiHost = config.menu_backend_url;
-const headers = {
-    'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
-};
 export default {
     name: "MenuPage",
     data() {
@@ -23,6 +20,9 @@ export default {
                 { value: 'Soup', text: '汤' },     // Soup
                 { value: 'Lunch', text: '午餐' }   // Lunch
             ],
+            headers : {
+                'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+            },
         };
     },
     mounted() {
@@ -46,7 +46,7 @@ export default {
         async fetchMenuList() {
             try {
                 const response = await axios.get(`${apiHost}/menu/getMenu?category=${this.MenuType}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 this.MenuList = response.data.name;
                 console.log(this.MenuList);
@@ -60,7 +60,7 @@ export default {
             try {
                 
                 const response = await axios.get(`${apiHost}/menu/getIngredient?name=${this.MenuName}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 return response.data;
             } catch (error) {
@@ -107,7 +107,7 @@ export default {
             console.log(requestBody);
             try {
                 const response = await axios.post(`${apiHost}/menu/EditMenu`, requestBody, {
-                    headers: headers
+                    headers: this.headers
                 });
                 if (response.status === 200) {
                     await this.fetchMenuList();
@@ -131,7 +131,7 @@ export default {
             };
             try {
                 const response = await axios.post(`${apiHost}/menu/DeleteMenu`, requestBody, {
-                    headers: headers
+                    headers: this.headers
                 });
                 if (response.status === 200) {
                     await this.fetchMenuList();
@@ -177,7 +177,7 @@ export default {
             if (validateIndex != null) {
                 try {
                     const response = await axios.get(`${apiHost}/menu/GetIngredientUnit?ingredientName=${this.rows[validateIndex].name}`, {
-                        headers: headers
+                        headers: this.headers
                     });
                     this.rows[validateIndex].unit = response.data;
                 } catch (error) {

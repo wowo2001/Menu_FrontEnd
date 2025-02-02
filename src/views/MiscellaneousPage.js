@@ -3,9 +3,6 @@ import axios from 'axios';
 import config from '.././config';
 
 const apiHost = config.menu_backend_url;
-const headers = {
-    'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
-};
 export default {
     name: "MiscellaneousPage",
     data() {
@@ -15,6 +12,9 @@ export default {
             ],
             menuId: null,
             isLoading: false,
+            headers : {
+                'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+            },
         };
     },
     async mounted() {
@@ -65,7 +65,7 @@ export default {
         async fetchIngredientList(menuId) {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 return response.data;
                 
@@ -78,7 +78,7 @@ export default {
         async getUpdatePurchaseList(menuId) {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 console.log(response.data.allIngredientList);
                 var extra = response.data.allIngredientList.filter(ingredient => ingredient.source === 'extra');
@@ -101,7 +101,7 @@ export default {
             if (validateIndex != null) {
                 try {
                     const response = await axios.get(`${apiHost}/menu/GetIngredientUnit?ingredientName=${this.rows[validateIndex].name}`, {
-                        headers: headers
+                        headers: this.headers
                     });
                     this.rows[validateIndex].unit = response.data;
                 } catch (error) {
@@ -118,7 +118,7 @@ export default {
             console.log(request);
             try {
                 const response = await axios.post(`${apiHost}/ShopList/UpdatePurchaseList`, request, {
-                    headers: headers
+                    headers: this.headers
                 });
                 console.log(response.data);
                 return response.data;

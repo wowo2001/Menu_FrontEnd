@@ -3,9 +3,6 @@ import axios from 'axios';
 import config from '.././config';
 
 const apiHost = config.menu_backend_url;
-const headers = {
-    'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
-};
 export default {
     data() {
         return {
@@ -18,6 +15,9 @@ export default {
             filterName: null,
             sortedIngredientList: [],
             firstOpen: true,
+            headers : {
+                'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+            },
         };
     },
     methods: {
@@ -26,7 +26,7 @@ export default {
             //await this.delay(1000);
             try {
                 var response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 this.allIngredientList = response.data.allIngredientList.map(ingredient => ({
                     ...ingredient,
@@ -54,7 +54,7 @@ export default {
             try {
                 // Send a POST request with the updated list
                 const response = await axios.post(`${apiHost}/ShopList/UpdatePurchaseList`, payload, {
-                    headers: headers
+                    headers: this.headers
                 });
                 console.log('Update response:', response.data); // Log the response
             } catch (error) {
@@ -68,7 +68,7 @@ export default {
         async fetchAllPurchaseList() {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 console.log(response.data); // Logs the API response
                 // Assuming the response contains the allIngredientList
@@ -131,7 +131,7 @@ export default {
             console.log(payload);
             try {
                 const response = await axios.post(`${apiHost}/ShopList/DeleteShopList`, payload, {
-                    headers: headers
+                    headers: this.headers
                 });
                 console.log(response.data); // Logs the API response
                 location.reload();

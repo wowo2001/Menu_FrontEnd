@@ -18,8 +18,12 @@ class Dish {
     }
 
     async updateIngredient() {
+        var headers = {
+            'token': localStorage.getItem('authToken'),
+        };
         try {
-                if (this.name !== '') {
+            if (this.name !== '') {
+                console.log(this.headers);
                     const response = await axios.get(`${apiHost}/menu/getIngredient?name=${this.name}`, {
                         headers: headers
                     });
@@ -95,9 +99,7 @@ class Day {
 
 
 const apiHost = config.menu_backend_url;
-const headers = {
-    'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
-};
+
 export default {
     name: "PlanPage",
     setup() {
@@ -125,6 +127,9 @@ export default {
                 breakpointMode: 'carousel'
             },
             dialogTypeList: ['Main', 'Side', 'Soup', 'Lunch'],
+            headers: {
+                'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+            },
         };
     },
     async mounted() {
@@ -133,6 +138,7 @@ export default {
         await this.fetchMenuData();
         await this.fetchTodayChoice(this.menuId);
         this.weeklyDishList = await this.weeklyDish();
+        
     },
     components:
         { Carousel, Slide, Pagination, Navigation },
@@ -275,22 +281,22 @@ export default {
         async fetchMenuData() {
             try {
                 const responseMain = await axios.get(`${apiHost}/menu/getMenu?category=Main`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 this.menuData['Main'] = responseMain.data.name;
 
                 const responseSide = await axios.get(`${apiHost}/menu/getMenu?category=Side`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 this.menuData['Side'] = responseSide.data.name;
 
                 const responseSoup = await axios.get(`${apiHost}/menu/getMenu?category=Soup`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 this.menuData['Soup'] = responseSoup.data.name;
 
                 const responseLunch = await axios.get(`${apiHost}/menu/getMenu?category=Lunch`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 this.menuData['Lunch'] = responseLunch.data.name;
 
@@ -302,7 +308,7 @@ export default {
         async fetchIngredients(menuName) {
             try {
                 const response = await axios.get(`${apiHost}/menu/getIngredient?name=${menuName}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 return response.data;
             } catch (error) {
@@ -313,7 +319,7 @@ export default {
             this.selectedDishList = [];
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${menuId}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 
                 const todayChoiceList = response.data.myChoice;
@@ -362,7 +368,7 @@ export default {
         async fetchAllPurchaseList() {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 // Assuming the response contains the allIngredientList
                 for (let index = 0; index < response.data.length; index++) {
@@ -405,7 +411,7 @@ export default {
                     params: {
                         Id: this.menuId
                     },
-                    headers: headers
+                    headers: this.headers
                 });
                 var notExistingPurchaseList = response.data.id == null;
             } catch (error) {
@@ -431,7 +437,7 @@ export default {
 
             if (notExistingPurchaseList == true) {
                 await axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody, {
-                    headers: headers
+                    headers: this.headers
                 })
                     .then(response => {
                         console.log("Successfully updated the shop list:", response.data);
@@ -449,7 +455,7 @@ export default {
                 }
                 if (userResponse) {
                     axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody, {
-                        headers: headers
+                        headers: this.headers
                     })
                         .then(response => {
                             console.log("Successfully updated the shop list:", response.data);
@@ -482,7 +488,7 @@ export default {
         async weeklyDish() {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 const todayChoiceList = response.data.myChoice;
                 var thisWeeksMenu = new Set();
@@ -525,7 +531,7 @@ export default {
         async randomSelect(dishType, dishListIndex) {
             try {
                 const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`, {
-                    headers: headers
+                    headers: this.headers
                 });
                 const todayChoiceList = response.data.myChoice;
                 var thisWeeksMenu = [];
