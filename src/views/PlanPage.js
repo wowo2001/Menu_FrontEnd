@@ -121,7 +121,6 @@ export default {
             dialogVisible: false,
             dialogType: null,
             carouselConfig : {
-                itemsToShow: 2.5,
                 wrapAround: false,
                 itemsToShow: 1,
                 breakpointMode: 'carousel'
