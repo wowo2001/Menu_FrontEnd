@@ -112,7 +112,7 @@ export default {
         return {
             MenuIdList: [],
             menuId: null,
-            day: new Day(5), // Days of the week
+            day: new Day(7), // Days of the week
             menuData: { 'Main': [], 'Side': [], 'Soup': [], 'Lunch': [] },
             selectedDishList: [],
             previousSelectedDishList: [],
