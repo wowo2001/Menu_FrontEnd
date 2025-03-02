@@ -18,9 +18,15 @@ class Dish {
     }
 
     async updateIngredient() {
+        var headers = {
+            'token': localStorage.getItem('authToken'),
+        };
         try {
-                if (this.name !== '') {
-                    const response = await axios.get(`${apiHost}/menu/getIngredient?name=${this.name}`);
+            if (this.name !== '') {
+                console.log(this.headers);
+                    const response = await axios.get(`${apiHost}/menu/getIngredient?name=${this.name}`, {
+                        headers: headers
+                    });
                     this.ingredient=response.data;
                 }
                 else {
@@ -93,6 +99,7 @@ class Day {
 
 
 const apiHost = config.menu_backend_url;
+
 export default {
     name: "PlanPage",
     setup() {
@@ -105,7 +112,7 @@ export default {
         return {
             MenuIdList: [],
             menuId: null,
-            day: new Day(5), // Days of the week
+            day: new Day(7), // Days of the week
             menuData: { 'Main': [], 'Side': [], 'Soup': [], 'Lunch': [] },
             selectedDishList: [],
             previousSelectedDishList: [],
@@ -114,12 +121,14 @@ export default {
             dialogVisible: false,
             dialogType: null,
             carouselConfig : {
-                itemsToShow: 2.5,
                 wrapAround: false,
                 itemsToShow: 1,
                 breakpointMode: 'carousel'
             },
             dialogTypeList: ['Main', 'Side', 'Soup', 'Lunch'],
+            headers: {
+                'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+            },
         };
     },
     async mounted() {
@@ -128,6 +137,7 @@ export default {
         await this.fetchMenuData();
         await this.fetchTodayChoice(this.menuId);
         this.weeklyDishList = await this.weeklyDish();
+        
     },
     components:
         { Carousel, Slide, Pagination, Navigation },
@@ -269,16 +279,24 @@ export default {
         // Fetch menu data from API
         async fetchMenuData() {
             try {
-                const responseMain = await axios.get(`${apiHost}/menu/getMenu?category=Main`);
+                const responseMain = await axios.get(`${apiHost}/menu/getMenu?category=Main`, {
+                    headers: this.headers
+                });
                 this.menuData['Main'] = responseMain.data.name;
 
-                const responseSide = await axios.get(`${apiHost}/menu/getMenu?category=Side`);
+                const responseSide = await axios.get(`${apiHost}/menu/getMenu?category=Side`, {
+                    headers: this.headers
+                });
                 this.menuData['Side'] = responseSide.data.name;
 
-                const responseSoup = await axios.get(`${apiHost}/menu/getMenu?category=Soup`);
+                const responseSoup = await axios.get(`${apiHost}/menu/getMenu?category=Soup`, {
+                    headers: this.headers
+                });
                 this.menuData['Soup'] = responseSoup.data.name;
 
-                const responseLunch = await axios.get(`${apiHost}/menu/getMenu?category=Lunch`);
+                const responseLunch = await axios.get(`${apiHost}/menu/getMenu?category=Lunch`, {
+                    headers: this.headers
+                });
                 this.menuData['Lunch'] = responseLunch.data.name;
 
             } catch (error) {
@@ -288,7 +306,9 @@ export default {
         // Fetch ingredients for the selected dish
         async fetchIngredients(menuName) {
             try {
-                const response = await axios.get(`${apiHost}/menu/getIngredient?name=${menuName}`);
+                const response = await axios.get(`${apiHost}/menu/getIngredient?name=${menuName}`, {
+                    headers: this.headers
+                });
                 return response.data;
             } catch (error) {
                 console.error('Error fetching ingredients:', error);
@@ -297,7 +317,9 @@ export default {
         async fetchTodayChoice(menuId) {
             this.selectedDishList = [];
             try {
-                const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${menuId}`);
+                const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${menuId}`, {
+                    headers: this.headers
+                });
                 
                 const todayChoiceList = response.data.myChoice;
                 //this.clearCache();
@@ -340,19 +362,13 @@ export default {
             this.cacheDropdownListOptions();
         },
 
-        async fetchIngredientList(menuId) {
-            //await this.delay(500);
-            try {
-                const response = await axios.get(`${apiHost}/ShopList/AggregateList?Id=${menuId}`);
-
-            } catch (error) {
-                console.error("Error fetching ingredient list:", error);
-            }
-        },
+        
 
         async fetchAllPurchaseList() {
             try {
-            const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`);
+                const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`, {
+                    headers: this.headers
+                });
                 // Assuming the response contains the allIngredientList
                 for (let index = 0; index < response.data.length; index++) {
                     const menuId = response.data[index];
@@ -393,7 +409,8 @@ export default {
                 const response = await axios.get(`${apiHost}/ShopList/GetPurchaseList`, {
                     params: {
                         Id: this.menuId
-                    }
+                    },
+                    headers: this.headers
                 });
                 var notExistingPurchaseList = response.data.id == null;
             } catch (error) {
@@ -418,7 +435,9 @@ export default {
  
 
             if (notExistingPurchaseList == true) {
-                await axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody)
+                await axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody, {
+                    headers: this.headers
+                })
                     .then(response => {
                         console.log("Successfully updated the shop list:", response.data);
                     })
@@ -434,7 +453,9 @@ export default {
                     userResponse = confirm("已经生成购物清单，更改菜单可能影响购物清单，是否更改？") && userResponse;
                 }
                 if (userResponse) {
-                    axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody)
+                    axios.post(`${apiHost}/ShopList/UpdateShopList`, requestBody, {
+                        headers: this.headers
+                    })
                         .then(response => {
                             console.log("Successfully updated the shop list:", response.data);
                         })
@@ -465,7 +486,9 @@ export default {
 
         async weeklyDish() {
             try {
-                const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`);
+                const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`, {
+                    headers: this.headers
+                });
                 const todayChoiceList = response.data.myChoice;
                 var thisWeeksMenu = new Set();
                 todayChoiceList.forEach((item, index) => {
@@ -506,7 +529,9 @@ export default {
         },
         async randomSelect(dishType, dishListIndex) {
             try {
-                const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`);
+                const response = await axios.get(`${apiHost}/ShopList/GetShopList?Id=${this.menuId}`, {
+                    headers: this.headers
+                });
                 const todayChoiceList = response.data.myChoice;
                 var thisWeeksMenu = [];
                 todayChoiceList.forEach((item, index) => {

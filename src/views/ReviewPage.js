@@ -15,6 +15,9 @@ export default {
             filterName: null,
             sortedIngredientList: [],
             firstOpen: true,
+            headers : {
+                'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+            },
         };
     },
     methods: {
@@ -22,7 +25,9 @@ export default {
         async fetchIngredientList(menuId) {
             //await this.delay(1000);
             try {
-                var response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`);
+                var response = await axios.get(`${apiHost}/ShopList/GetPurchaseList?Id=${menuId}`, {
+                    headers: this.headers
+                });
                 this.allIngredientList = response.data.allIngredientList.map(ingredient => ({
                     ...ingredient,
                     purchased: ingredient.purchased, // Retain the purchased status from the API
@@ -48,7 +53,9 @@ export default {
 
             try {
                 // Send a POST request with the updated list
-                const response = await axios.post(`${apiHost}/ShopList/UpdatePurchaseList`, payload);
+                const response = await axios.post(`${apiHost}/ShopList/UpdatePurchaseList`, payload, {
+                    headers: this.headers
+                });
                 console.log('Update response:', response.data); // Log the response
             } catch (error) {
                 console.error("Error updating purchase status:", error);
@@ -60,7 +67,9 @@ export default {
         },
         async fetchAllPurchaseList() {
             try {
-                const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`);
+                const response = await axios.get(`${apiHost}/ShopList/GetAllPurchaseList`, {
+                    headers: this.headers
+                });
                 console.log(response.data); // Logs the API response
                 // Assuming the response contains the allIngredientList
                 this.MenuIdList = response.data;
@@ -121,7 +130,9 @@ export default {
             };
             console.log(payload);
             try {
-                const response = await axios.post(`${apiHost}/ShopList/DeleteShopList`, payload);
+                const response = await axios.post(`${apiHost}/ShopList/DeleteShopList`, payload, {
+                    headers: this.headers
+                });
                 console.log(response.data); // Logs the API response
                 location.reload();
             } catch (error) {

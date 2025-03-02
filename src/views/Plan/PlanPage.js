@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useRouter } from 'vue-router'; // To navigate programmatically
 
-const apiHost = "http://3.107.99.30:3000";
+const apiHost = config.menu_backend_url;
 export default {
     name: "PlanPage",
     data() {

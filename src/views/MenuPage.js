@@ -20,6 +20,9 @@ export default {
                 { value: 'Soup', text: '汤' },     // Soup
                 { value: 'Lunch', text: '午餐' }   // Lunch
             ],
+            headers : {
+                'token': localStorage.getItem('authToken'),  // Example: Adding an Authorization header
+            },
         };
     },
     mounted() {
@@ -42,7 +45,9 @@ export default {
         
         async fetchMenuList() {
             try {
-                const response = await axios.get(`${apiHost}/menu/getMenu?category=${this.MenuType}`);
+                const response = await axios.get(`${apiHost}/menu/getMenu?category=${this.MenuType}`, {
+                    headers: this.headers
+                });
                 this.MenuList = response.data.name;
                 console.log(this.MenuList);
             } catch (error) {
@@ -54,7 +59,9 @@ export default {
         async fetchIngredient() {
             try {
                 
-                const response = await axios.get(`${apiHost}/menu/getIngredient?name=${this.MenuName}`);
+                const response = await axios.get(`${apiHost}/menu/getIngredient?name=${this.MenuName}`, {
+                    headers: this.headers
+                });
                 return response.data;
             } catch (error) {
                 console.error("Error fetching ingredient list:", error);
@@ -99,13 +106,16 @@ export default {
             });
             console.log(requestBody);
             try {
-                const response = await axios.post(`${apiHost}/menu/EditMenu`, requestBody);
+                const response = await axios.post(`${apiHost}/menu/EditMenu`, requestBody, {
+                    headers: this.headers
+                });
                 if (response.status === 200) {
                     await this.fetchMenuList();
                     await this.setMenuName(this.MenuName);
                     this.newMenuName = null;
                     alert("菜单已更新");
                 }
+                console.log(response.data);
             }
             catch (error) {
                 // Handle error (e.g., show an error message to the user)
@@ -120,7 +130,9 @@ export default {
                 "Name": this.MenuName
             };
             try {
-                const response = await axios.post(`${apiHost}/menu/DeleteMenu`, requestBody);
+                const response = await axios.post(`${apiHost}/menu/DeleteMenu`, requestBody, {
+                    headers: this.headers
+                });
                 if (response.status === 200) {
                     await this.fetchMenuList();
                     alert("菜单已删除");
@@ -164,7 +176,9 @@ export default {
             console.log(validateIndex);
             if (validateIndex != null) {
                 try {
-                    const response = await axios.get(`${apiHost}/menu/GetIngredientUnit?ingredientName=${this.rows[validateIndex].name}`);
+                    const response = await axios.get(`${apiHost}/menu/GetIngredientUnit?ingredientName=${this.rows[validateIndex].name}`, {
+                        headers: this.headers
+                    });
                     this.rows[validateIndex].unit = response.data;
                 } catch (error) {
                     console.error("Error fetching ingredient list:", error);

@@ -1,36 +1,32 @@
 ﻿<template>
   <div class="mainpage" style="touch-action: manipulation;">
     <el-container>
-      <el-header >
-        <el-affix target=".mainpage" position="top" :offset="0">
-          <div style="width: 100%;height: 100%;padding-top: 1rem;z-index: 0;background-color:#f1e6d8;">
-            <span style="font-size: 1.6rem"> {{ value }} </span>
-          </div>
-        </el-affix>
-      </el-header>
+        <el-header>
+            <el-affix target=".mainpage" position="top" :offset="0">
+                <div style="width: 100%;height: 100%;padding-top: 1rem;z-index: 0;background-color:#f1e6d8;">
+                    <span style="font-size: 1.6rem"> {{ value }} </span>
+                </div>
+            </el-affix>
+        </el-header>
       <el-main> <router-view> </router-view></el-main>
       <el-footer>
         <el-affix target=".mainpage" position="bottom" :offset="0">
-          <div>
-            <el-segmented
-              v-model="value"
-              :options="options"
-              direction="horizontal"
-              size="default"
-            >
-              <template #default="{ item }">
-                <div
-                  :class="['flex', 'items-center', 'gap-2', 'flex-col']"
-                  @click="goToPage(item.path, item.label)"
-                >
-                  <el-icon size="40">
-                    <component :is="item.icon" />
-                  </el-icon>
-                  <div style="font-size: 1rem">{{ item.label }}</div>
-                </div>
-              </template>
-            </el-segmented>
-          </div>
+            <div>
+                <el-segmented v-model="value"
+                              :options="options"
+                              direction="horizontal"
+                              size="default">
+                    <template #default="{ item }">
+                        <div :class="['flex', 'items-center', 'gap-2', 'flex-col']"
+                             @click="goToPage(item.path, item.label)">
+                            <el-icon size="40">
+                                <component :is="item.icon" />
+                            </el-icon>
+                            <div style="font-size: 1rem">{{ item.label }}</div>
+                        </div>
+                    </template>
+                </el-segmented>
+            </div>
         </el-affix>
       </el-footer>
     </el-container>
